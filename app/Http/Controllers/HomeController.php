@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $response = \Telegram::getMe();
+        dd($response);
+        $botId = $response->getId();
+        $firstName = $response->getFirstName();
+        $username = $response->getUsername();
         return view('home');
     }
 }
