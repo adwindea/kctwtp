@@ -21,3 +21,4 @@ Auth::routes();
 
 Route::get('/dashboard', [App\Http\Controllers\OfficeController::class, 'dashboard'])->name('dashboard');
 Route::get('/dataPelanggan', [App\Http\Controllers\OfficeController::class, 'dataPelanggan'])->name('dataPelanggan');
+Route::post('/dataPelangganTable', [App\Http\Controllers\OfficeController::class, 'dataPelangganTable'])->name('dataPelangganTable');
