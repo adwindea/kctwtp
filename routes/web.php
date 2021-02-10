@@ -19,6 +19,14 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/', [App\Http\Controllers\EndUserController::class, 'index'])->name('idForm');
+Route::post('/detailPel', [App\Http\Controllers\EndUserController::class, 'detailPel'])->name('detailPel');
+Route::get('/updateToken/{id}', [App\Http\Controllers\EndUserController::class, 'updateToken'])->name('updateToken');
+Route::post('/submitUpgrade', [App\Http\Controllers\EndUserController::class, 'submitUpgrade'])->name('submitUpgrade');
+Route::get('/thanksPage', [App\Http\Controllers\EndUserController::class, 'thanksPage'])->name('thanksPage');
+
+
 Route::get('/dashboard', [App\Http\Controllers\OfficeController::class, 'dashboard'])->name('dashboard');
 Route::get('/dataPelanggan', [App\Http\Controllers\OfficeController::class, 'dataPelanggan'])->name('dataPelanggan');
 Route::post('/dataPelangganTable', [App\Http\Controllers\OfficeController::class, 'dataPelangganTable'])->name('dataPelangganTable');
+Route::post('/confirmUpgrade', [App\Http\Controllers\OfficeController::class, 'confirmUpgrade'])->name('confirmUpgrade');

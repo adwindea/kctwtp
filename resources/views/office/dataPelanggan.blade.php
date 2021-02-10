@@ -60,6 +60,7 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">Status</th>
+                                <th class="text-center">Gambar</th>
                                 <th class="text-center">ID Pelanggan</th>
                                 <th class="text-center">No. Meter</th>
                                 <th class="text-center" style="min-width:120px;">Nama</th>
@@ -75,6 +76,32 @@
                             </tr>
                         </thead>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalconfirm" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Konfirmasi Update</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a id="link" target="_blank">
+                                <img id="lampiran" style="width: 100%;">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <input type="hidden" id="xid">
+                    <button type="button" class="btn btn-danger" onclick="confirmUpgrade(0)">Reject</button>
+                    <button type="button" class="btn btn-success" onclick="confirmUpgrade(1)">Accept</button>
                 </div>
             </div>
         </div>
@@ -123,6 +150,7 @@
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'status', name: 'status'},
+            {data: 'img', name: 'img'},
             {data: 'idpel', name: 'idpel'},
             {data: 'no_meter', name: 'no_meter'},
             {data: 'nama', name: 'nama'},
@@ -137,10 +165,10 @@
             {data: 'kct2b', name: 'kct2b'}
         ],
         columnDefs: [
-            { visible: false, targets: [ 10, 11, 12, 13] },
-            { className: "text-center", targets: [ 0, 1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13] },
-            { searchable: false, targets: [ 0, 3, 6, 7, 8, 9, 10, 11, 12 ] },
-            { orderable: false, targets: [ 0, 9, 10, 11, 12 ] }
+            { visible: false, targets: [ 2, 10, 11, 12, 13] },
+            { className: "text-center", targets: [ 0, 1, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14] },
+            { searchable: false, targets: [ 0, 4, 7, 8, 9, 10, 11, 12, 13, 14 ] },
+            { orderable: false, targets: [ 0, 11, 12, 13, 14 ] }
         ],
         dom:
             "<'row'<'col-lg-12 col-md-12 col-12'B>>" +
@@ -190,5 +218,31 @@
             search: ""
         }
     });
+    function confirmModal(img,id){
+        $('#link').attr('href', img);
+        $('#lampiran').attr('src', img);
+        $('#xid').val(id);
+        $('#modalconfirm').modal('show');
+    }
+    function confirmUpgrade(mode){
+        var id = $('#xid').val();
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('confirmUpgrade') }}',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                mode: mode
+            },
+            dataType: 'json',
+            success: function (data) {
+                if(data.success == true){
+                    $('#modalconfirm').modal('hide');
+                    table.ajax.reload();
+                    // window.location.replace('{{route("thanksPage")}}');
+                }
+            },
+        });
+    }
 </script>
 @stop
