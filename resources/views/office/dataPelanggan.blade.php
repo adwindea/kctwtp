@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
+                {{-- <div class="card-header">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                             <form id="form-filter">
@@ -53,9 +53,9 @@
                             <a data-toggle="collapse" class="btn btn-primary pull-right btn-xs btn-flat collapsed" href="#filterbox" aria-expanded="false"><i class="fa fa-filter"></i> Filter box</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card-body">
-                    <table class="table" id="spending_table" cellspacing="0" width="100%">
+                    <table class="table" id="pelanggan_table" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
@@ -73,6 +73,11 @@
                                 <th class="text-center">KCT 1B</th>
                                 <th class="text-center">KCT 2A</th>
                                 <th class="text-center">KCT 2B</th>
+                                <th class="text-center">KCT1</th>
+                                <th class="text-center">KCT2</th>
+                                <th class="text-center">Tanggal Input</th>
+                                <th class="text-center">Tanggal Konfirmasi</th>
+                                <th class="text-center">Konfirmasi Oleh</th>
                             </tr>
                         </thead>
                     </table>
@@ -133,7 +138,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    var table = $('#spending_table').DataTable({
+    var table = $('#pelanggan_table').DataTable({
         processing: true,
         serverSide: true,
         order: [],
@@ -148,26 +153,31 @@
             }
         },
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'status', name: 'status'},
-            {data: 'img', name: 'img'},
-            {data: 'idpel', name: 'idpel'},
-            {data: 'no_meter', name: 'no_meter'},
-            {data: 'nama', name: 'nama'},
-            {data: 'alamat', name: 'alamat'},
-            {data: 'tarif', name: 'tarif'},
-            {data: 'daya', name: 'daya'},
-            {data: 'krn', name: 'krn'},
-            {data: 'vkrn', name: 'vkrn'},
-            {data: 'kct1a', name: 'kct1a'},
-            {data: 'kct1b', name: 'kct1b'},
-            {data: 'kct2a', name: 'kct2a'},
-            {data: 'kct2b', name: 'kct2b'}
+            {data: 'DT_RowIndex', name: 'DT_RowIndex'}, //0
+            {data: 'status', name: 'status'}, //1
+            {data: 'img', name: 'img'}, //3
+            {data: 'idpel', name: 'idpel'}, //3
+            {data: 'no_meter', name: 'no_meter'}, //4
+            {data: 'nama', name: 'nama'}, //5
+            {data: 'alamat', name: 'alamat'}, //6
+            {data: 'tarif', name: 'tarif'}, //7
+            {data: 'daya', name: 'daya'}, //8
+            {data: 'krn', name: 'krn'}, //9
+            {data: 'vkrn', name: 'vkrn'}, //10
+            {data: 'kct1a', name: 'kct1a'}, //11
+            {data: 'kct1b', name: 'kct1b'}, //12
+            {data: 'kct2a', name: 'kct2a'}, //13
+            {data: 'kct2b', name: 'kct2b'}, //14
+            {data: 'kct1', name: 'kct1'}, //15
+            {data: 'kct2', name: 'kct2'}, //16
+            {data: 'upgraded_at', name: 'upgraded_at'}, //17
+            {data: 'confirmed_at', name: 'confirmed_at'}, //18
+            {data: 'username', name: 'username'}, //19
         ],
         columnDefs: [
-            { visible: false, targets: [ 2, 10, 11, 12, 13] },
-            { className: "text-center", targets: [ 0, 1, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14] },
-            { searchable: false, targets: [ 0, 4, 7, 8, 9, 10, 11, 12, 13, 14 ] },
+            { visible: false, targets: [ 2, 11, 12, 13, 14, 15, 16, 17, 18, 19] },
+            { className: "text-center", targets: [ 0, 1, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] },
+            { searchable: false, targets: [ 0, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ] },
             { orderable: false, targets: [ 0, 11, 12, 13, 14 ] }
         ],
         dom:

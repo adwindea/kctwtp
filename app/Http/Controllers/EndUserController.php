@@ -14,8 +14,13 @@ class EndUserController extends Controller
 
     public function detailPel(Request $request){
         $idpel = $request->idpel;
-        $pel = \App\Models\Pelanggan::where('idpel', $idpel)->first();
-        return view('enduser.detailPel', $pel);
+        $no_meter = $request->no_meter;
+        $pel = \App\Models\Pelanggan::where('idpel', $idpel)->where('no_meter', $no_meter)->first();
+        if(!empty($pel)){
+            return view('enduser.detailPel', $pel);
+        }else{
+            return redirect('/')->with('error', 'Data tidak ditemukan atau meter Anda tidak memerlukan update!')->withInput();
+        }
     }
 
     public function updateToken($id){
@@ -24,6 +29,22 @@ class EndUserController extends Controller
         return view('enduser.updateToken', $data);
     }
 
+    public function kctStatus(Request $request){
+        $kct1 = $request->kct1;
+        $kct2 = $request->kct2;
+        $id = $request->id;
+        $id = Crypt::decrypt($id);
+        $pel = \App\Models\Pelanggan::where('id', $id)->first();
+        if($kct1){
+            $pel->kct1 = true;
+        }
+        if($kct2){
+            $pel->kct2 = true;
+        }
+        $pel->upgraded_at = date('Y-m-d H:i:s');
+        $pel->save();
+        return response()->json( array('success' => true) );
+    }
     public function submitUpgrade(Request $request){
         $id = $request->id;
         $img = $request->img;

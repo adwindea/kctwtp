@@ -12,7 +12,7 @@
         {{ csrf_field() }} --}}
 
         {{-- Email field --}}
-    <div class="tokenlist">
+    <div class="kct1">
         <div class="row">
             <div class="col-12">
                 <p>Masukkan nomor token berikut secara berurutan dan tekan enter di setiap nomor tokennya.</p>
@@ -28,6 +28,24 @@
                     <label>KCT2</label>
                     <input type="text" class="form-control" value="{{ $pel->kct1b }}" disabled>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>Pastikan semua token terisi dengan benar, lalu perhatikan layar KWH meter Anda.<br>
+                    Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="kct2">
+        <div class="row">
+            <div class="col-12">
+                <p>Masukkan kembali nomor token berikut secara berurutan dan tekan enter di setiap nomor tokennya.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
                 @if(!empty($pel->kct2a))
                 <div class="form-group">
                     <label>KCT3</label>
@@ -64,7 +82,7 @@
                         <input type="file" class="custom-file-input" id="berkas" onchange="generateBase64()" required>
                         <label class="custom-file-label" for="berkas">Choose file</label>
                     </div>
-                    <div id="warning" style="color: red;"><span class="fa fa-exclamation-triangle"></span> Silahkan upload gambar terlebih dahulu!</div>
+                    <div id="warning" style="color: rgb(255, 0, 0);"><span class="fa fa-exclamation-triangle"></span> Silahkan upload gambar terlebih dahulu!</div>
                     <input type="hidden" id="img">
                     <input type="hidden" name="id" value="{{ Crypt::encrypt($pel->id) }}">
                     <img id="thumbnail" class="mx-auto">
@@ -76,11 +94,19 @@
 @stop
 
 @section('auth_footer')
-    <div class="tokenlist">
-        <a href="{{ route('idForm') }}" class="btn btn-danger">Gagal</a>
-        <button class="btn btn-success float-right" onclick="openConfirm()">Sukses</button>
+    <div class="kct1">
+        <a href="{{ route('idForm') }}" class="btn btn-danger">Salah</a>
+        @if(!empty($pel->kct2a) && !empty($pel->kct2b))
+        <button class="btn btn-success float-right" onclick="goToKct2()">Benar</button>
+        @else
+        <button class="btn btn-success float-right" onclick="openConfirm()">Benar</button>
+        @endif
     </div>
-    <div class="konfirmasi">
+    <div class="kct2">
+        <button class="btn btn-danger" onclick="">Salah</button>
+        <button class="btn btn-success float-right" onclick="setKct2()">Benar</button>
+    </div>
+<div class="konfirmasi">
         <button class="btn btn-default" onclick="getBack()">Kembali</button>
         <button class="btn btn-success float-right" onclick="submitData()">Kirim</button>
     </div>
@@ -91,15 +117,54 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('.konfirmasi').hide();
+        $('.kct2').hide();
         $('#warning').hide();
     });
+    function goToKct2(){
+        var id = '{{ Crypt::encrypt($pel->id) }}';
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('kctStatus') }}',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                kct1: 1
+            },
+            dataType: 'json',
+            success: function (data) {
+                if(data.success == true){
+                    $('.kct1').slideUp();
+                    $('.kct2').slideDown();
+                }
+            },
+        });
+    }
+    function setKct2(){
+        var id = '{{ Crypt::encrypt($pel->id) }}';
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('kctStatus') }}',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                kct2: 1
+            },
+            dataType: 'json',
+            success: function (data) {
+                if(data.success == true){
+                    openConfirm();
+                }
+            },
+        });
+    }
     function openConfirm(){
-        $('.tokenlist').slideUp();
+        $('.kct1').slideUp();
+        $('.kct2').slideUp();
         $('.konfirmasi').slideDown();
     }
     function getBack(){
         $('.konfirmasi').slideUp();
-        $('.tokenlist').slideDown();
+        $('.kct1').slideDown();
     }
     function submitData(){
         var id = '{{ Crypt::encrypt($pel->id) }}';

@@ -14,16 +14,28 @@
 
         {{-- Email field --}}
         <div class="input-group mb-3">
-            <input type="text" name="idpel" class="form-control {{ $errors->has('idpel') ? 'is-invalid' : '' }}"
-                   value="{{ old('idpel') }}" placeholder="ID Pelanggan" autofocus>
+            <input type="text" name="idpel" class="form-control" value="{{ old('idpel') }}" placeholder="ID Pelanggan" autofocus>
             <div class="input-group-append">
                 <div class="input-group-text">
-                    <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                    <span class="fas fa-user"></span>
                 </div>
             </div>
             @if($errors->has('idpel'))
                 <div class="invalid-feedback">
                     <strong>{{ $errors->first('idpel') }}</strong>
+                </div>
+            @endif
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" name="no_meter" class="form-control" value="{{ old('no_meter') }}" placeholder="Nomor Meter" autofocus>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+            @if($errors->has('no_meter'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('no_meter') }}</strong>
                 </div>
             @endif
         </div>
@@ -63,4 +75,17 @@
             </a>
         </p>
     @endif
+@stop
+
+@section('js')
+@if(session('error'))
+<script type="text/javascript">
+    $(document).Toasts('create', {
+        title: 'Error',
+        body: '{{session("error")}}',
+        icon: 'fas fa-exclamation-triangle',
+        class: 'bg-danger'
+    });
+</script>
+@endif
 @stop

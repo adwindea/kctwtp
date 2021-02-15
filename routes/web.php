@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\EndUserController::class, 'index'])->name('idForm');
 Route::post('/detailPel', [App\Http\Controllers\EndUserController::class, 'detailPel'])->name('detailPel');
 Route::get('/updateToken/{id}', [App\Http\Controllers\EndUserController::class, 'updateToken'])->name('updateToken');
+Route::post('/kctStatus', [App\Http\Controllers\EndUserController::class, 'kctStatus'])->name('kctStatus');
 Route::post('/submitUpgrade', [App\Http\Controllers\EndUserController::class, 'submitUpgrade'])->name('submitUpgrade');
 Route::get('/thanksPage', [App\Http\Controllers\EndUserController::class, 'thanksPage'])->name('thanksPage');
 

@@ -21,7 +21,9 @@ class OfficeController extends Controller
         return view('office.dataPelanggan');
     }
     public function dataPelangganTable(){
-        $pelanggan = \App\Models\Pelanggan::all();
+        $pelanggan = \App\Models\Pelanggan::select('pelanggans.*', 'users.name as username')
+        ->leftJoin('users', 'pelanggans.confirmed_by', '=', 'users.id')
+        ->get();
         return Datatables::of($pelanggan)
         ->addColumn('status', function ($pel) {
             $status = '<span class="badge badge-info">Not Updated</span>';
@@ -38,6 +40,20 @@ class OfficeController extends Controller
                 $img = '<a href="'.$pel->img.'" target="_blank"><img src="'.$pel->img.'" style="max-height: 40px;"></img></a>';
             }
             return $img;
+        })
+        ->editColumn('kct1', function($pel){
+            $kct1 = '';
+            if($pel->kct1 == 1){
+                $kct1 = '<span class="fa fa-check"></span>';
+            }
+            return $kct1;
+        })
+        ->editColumn('kct2', function($pel){
+            $kct2 = '';
+            if($pel->kct2 == 1){
+                $kct2 = '<span class="fa fa-check"></span>';
+            }
+            return $kct2;
         })
         ->removeColumn('id')
         ->addIndexColumn()
