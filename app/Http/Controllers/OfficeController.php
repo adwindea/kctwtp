@@ -57,7 +57,7 @@ class OfficeController extends Controller
         })
         ->removeColumn('id')
         ->addIndexColumn()
-        ->rawColumns(['status', 'img'])
+        ->rawColumns(['status', 'img', 'kct1', 'kct2'])
         ->make(true);
     }
     public function confirmUpgrade(Request $request){
