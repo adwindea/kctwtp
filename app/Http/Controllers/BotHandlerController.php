@@ -12,20 +12,20 @@ class BotHandlerController extends Controller
 
         $chat_id = $updates->getMessage()->getChat()->getId();
         $message = $updates->getMessage()->getText();
-        $response = Telegram::sendMessage([
-            'chat_id' => $chat_id,
-            'text' => $message
-        ]);
-        // $session = TelegramSession::where('chat_id', $chat_id)->first();
-        // if(!empty($session)){
-        //     if(!empty($session->session_name)){
-        //         $this->processSession($session, $chat_id, $message);
-        //     }else{
-        //         $this->startSession($chat_id, $message);
-        //     }
-        // }else{
-        //     $this->startSession($chat_id, $message);
-        // }
+        // $response = Telegram::sendMessage([
+        //     'chat_id' => $chat_id,
+        //     'text' => $message
+        // ]);
+        $session = \App\Models\TelegramSession::where('chat_id', $chat_id)->first();
+        if(!empty($session)){
+            if(!empty($session->session_name)){
+                $this->processSession($session, $chat_id, $message);
+            }else{
+                $this->startSession($chat_id, $message);
+            }
+        }else{
+            $this->startSession($chat_id, $message);
+        }
     }
 
     function startSession($chat_id, $message){
