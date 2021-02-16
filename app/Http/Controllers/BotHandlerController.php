@@ -19,7 +19,7 @@ class BotHandlerController extends Controller
         $session = \App\Models\TelegramSession::where('chat_id', $chat_id)->first();
         if(!empty($session)){
             if(!empty($session->session_name)){
-                if($session->session_name == 'Start'){
+                if($session->session_name == 'Start' and $message != '/reset'){
                     $pel = \App\Models\Pelanggan::where('no_meter', $message)->first();
                     if(!empty($pel)){
                         $add = '';
@@ -50,8 +50,6 @@ Versi KWH : KRN'.$pel->vkrn.'
                             // 'reply_markup' => $reply_markup
                         ]);
                     }
-                }elseif($session->session_name == 'Input Number'){
-
                 }elseif($message == '/reset'){
                     $session->delete();
                 }
