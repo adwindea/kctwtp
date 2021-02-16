@@ -13,7 +13,7 @@
         {{ csrf_field() }}
 
         {{-- Email field --}}
-        <div class="input-group mb-3">
+        {{-- <div class="input-group mb-3">
             <input type="text" name="idpel" class="form-control" value="{{ old('idpel') }}" placeholder="ID Pelanggan" autofocus>
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -25,7 +25,7 @@
                     <strong>{{ $errors->first('idpel') }}</strong>
                 </div>
             @endif
-        </div>
+        </div> --}}
         <div class="input-group mb-3">
             <input type="text" name="no_meter" class="form-control" value="{{ old('no_meter') }}" placeholder="Nomor Meter" autofocus>
             <div class="input-group-append">
@@ -59,22 +59,22 @@
 
 @section('auth_footer')
     {{-- Password reset link --}}
-    @if($password_reset_url ?? '')
+    {{-- @if($password_reset_url ?? '')
         <p class="my-0">
             <a href="{{ $password_reset_url ?? '' }}">
                 {{ __('adminlte::adminlte.i_forgot_my_password') }}
             </a>
         </p>
-    @endif
+    @endif --}}
 
     {{-- Register link --}}
-    @if($register_url ?? '')
+    {{-- @if($register_url ?? '')
         <p class="my-0">
             <a href="{{ $register_url ?? '' }}">
                 {{ __('adminlte::adminlte.register_a_new_membership') }}
             </a>
         </p>
-    @endif
+    @endif --}}
 @stop
 
 @section('js')
