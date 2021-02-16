@@ -12,8 +12,10 @@ class BotHandlerController extends Controller
 
         $chat_id = $updates->getMessage()->getChat()->getId();
         $message = $updates->getMessage()->getText();
-
-        echo $chat_id;
+        $response = Telegram::sendMessage([
+            'chat_id' => $chat_id,
+            'text' => $message
+        ]);
         // $session = TelegramSession::where('chat_id', $chat_id)->first();
         // if(!empty($session)){
         //     if(!empty($session->session_name)){
@@ -23,21 +25,6 @@ class BotHandlerController extends Controller
         //     }
         // }else{
         //     $this->startSession($chat_id, $message);
-        // }
-        // if($message == '/start'){
-        //     $response = Telegram::sendMessage([
-        //         'chat_id' => $chat_id,
-        //         'text' => 'Halo, silahkan masukkan nomor meter anda untuk memulai.'
-        //     ]);
-        //     $session = new TelegramSession;
-        //     $session->chat_id = $chat_id;
-        //     $session->session_name = 'input_number';
-        //     $session->save;
-        // }else{
-        //     $response = Telegram::sendMessage([
-        //         'chat_id' => $chat_id,
-        //         'text' => 'Perintah tidak ditemukan!'
-        //     ]);
         // }
     }
 
