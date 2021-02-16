@@ -13,9 +13,9 @@ class EndUserController extends Controller
     }
 
     public function detailPel(Request $request){
-        $idpel = $request->idpel;
+        // $idpel = $request->idpel;
         $no_meter = $request->no_meter;
-        $pel = \App\Models\Pelanggan::where('idpel', $idpel)->where('no_meter', $no_meter)->first();
+        $pel = \App\Models\Pelanggan::where('no_meter', $no_meter)->first();
         if(!empty($pel)){
             return view('enduser.detailPel', $pel);
         }else{
