@@ -8,21 +8,22 @@ use Telegram;
 class BotHandlerController extends Controller
 {
     public function telegramHandler(){
-        $updates = Telegram::getWebhookUpdates();
+        $updates = Telegram::getUpdates();
 
         $chat_id = $updates->getMessage()->getChat()->getId();
         $message = $updates->getMessage()->getText();
 
-        $session = TelegramSession::where('chat_id', $chat_id)->first();
-        if(!empty($session)){
-            if(!empty($session->session_name)){
-                $this->processSession($session, $chat_id, $message);
-            }else{
-                $this->startSession($chat_id, $message);
-            }
-        }else{
-            $this->startSession($chat_id, $message);
-        }
+        echo $chat_id;
+        // $session = TelegramSession::where('chat_id', $chat_id)->first();
+        // if(!empty($session)){
+        //     if(!empty($session->session_name)){
+        //         $this->processSession($session, $chat_id, $message);
+        //     }else{
+        //         $this->startSession($chat_id, $message);
+        //     }
+        // }else{
+        //     $this->startSession($chat_id, $message);
+        // }
         // if($message == '/start'){
         //     $response = Telegram::sendMessage([
         //         'chat_id' => $chat_id,
