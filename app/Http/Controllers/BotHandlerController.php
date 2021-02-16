@@ -53,14 +53,6 @@ class BotHandlerController extends Controller
 
     function processSession($session, $chat_id, $message){
         if($session->session_name == 'Start'){
-            $session->chat_id = $chat_id;
-            $session->session_name = 'Input Number';
-            $session->save();
-            $response = Telegram::sendMessage([
-                'chat_id' => $chat_id,
-                'text' => 'Silahkan masukkan nomor meter Anda.'
-            ]);
-        }elseif($session->session_name == 'Input Number'){
             $pel = \App\Models\Pelanggan::where('no_meter', $message)->first();
             if(!empty($pel)){
                 $add = '';
@@ -79,19 +71,23 @@ class BotHandlerController extends Controller
                     $session->save();
                 }
                 $chat = 'Informasi Pelanggan
-                IDPEL : '.$pel->id_pel.'
-                Nama : '.$pel->nama.'
-                Tarif : '.$pel->tarif.'
-                Daya : '.number_format($pel->daya, 0, '', '').'
-                Alamat : '.$pel->alamat.'
-                Versi KWH : KRN'.$pel->vkrn
-                .$add;
+IDPEL : '.$pel->idpel.'
+Nama : '.$pel->nama.'
+Tarif : '.$pel->tarif.'
+Daya : '.number_format($pel->daya, 0, '', '').'
+Alamat : '.$pel->alamat.'
+Versi KWH : KRN'.$pel->vkrn.'
+'.$add;
                 $response = Telegram::sendMessage([
                     'chat_id' => $chat_id,
                     'text' => $chat,
                     'reply_markup' => $reply_markup
                 ]);
             }
+        }elseif($session->session_name == 'Input Number'){
+
+        }elseif($message == '/reset'){
+            $session->delete();
         }
     }
 }

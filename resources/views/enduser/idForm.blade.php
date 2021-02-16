@@ -5,7 +5,7 @@
 
 @section('auth_header')
     <p class="text-center">Selamat datang di Sistem Upgrade Meter PLN</p>
-    <small>Silahkan isi ID Pelanggan Anda untuk memulai.</small>
+    <small>Silahkan isi Nomor Meter Anda untuk memulai.</small>
 @stop
 
 @section('auth_body')
