@@ -8,9 +8,18 @@ use Telegram;
 class BotHandlerController extends Controller
 {
     public function telegramHandler(){
-        $update = Telegram::commandsHandler(true);
-        echo 'ok';
-        // dd(Telegram::getUpdates());
+        $updates = Telegram::getWebhookUpdates();
+
+        $chat_id = $updates->getMessage()->getChat()->getId();
+
+        $response = Telegram::sendMessage([
+          'chat_id' => $chat_id,
+          'text' => 'Hello World'
+        ]);
+
+        $messageId = $response->getMessageId();
+
+        return 'ok';        // dd(Telegram::getUpdates());
         // $updates = Telegram::getWebhookUpdates();
         // if($updates->getText == '/start'){
         //     $chat_id = $updates['chat']['id'];
