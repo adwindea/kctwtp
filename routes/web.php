@@ -32,5 +32,5 @@ Route::get('/dataPelanggan', [App\Http\Controllers\OfficeController::class, 'dat
 Route::post('/dataPelangganTable', [App\Http\Controllers\OfficeController::class, 'dataPelangganTable'])->name('dataPelangganTable');
 Route::post('/confirmUpgrade', [App\Http\Controllers\OfficeController::class, 'confirmUpgrade'])->name('confirmUpgrade');
 
-Route::post('/telegramHandler', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
-Route::get('/telegramHandler', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
+Route::post('/initokenwebhook1/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
+Route::get('/initokenwebhook1/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');

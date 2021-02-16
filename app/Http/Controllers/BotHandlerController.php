@@ -16,6 +16,11 @@ class BotHandlerController extends Controller
                 'chat_id' => $chat_id,
                 'text' => 'Selamat Datang!'
             ]);
+        }else{
+            $response = Telegram::sendMessage([
+                'chat_id' => $chat_id,
+                'text' => 'Perintah tidak ditemukan!'
+            ]);
         }
     }
 }
