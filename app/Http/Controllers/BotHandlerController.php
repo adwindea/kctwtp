@@ -23,19 +23,18 @@ class BotHandlerController extends Controller
                     $pel = \App\Models\Pelanggan::where('no_meter', $message)->first();
                     if(!empty($pel)){
                         $add = '';
-                        $reply_markup = '';
+                        // $reply_markup = '';
                         if($pel->upgraded == 0 and ($pel->vkrn == 41 or $pel->vkrn == 42)){
                             $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
-                            $keyboard = ['Update'];
-                            $reply_markup = Telegram::replyKeyboardMarkup([
-                                'keyboard' => $keyboard,
-                                'resize_keyboard' => true,
-                                'one_time_keyboard' => true
-                            ]);
+                            // $keyboard = ['Update'];
+                            // $reply_markup = Telegram::replyKeyboardMarkup([
+                            //     'keyboard' => $keyboard,
+                            //     'resize_keyboard' => true,
+                            //     'one_time_keyboard' => true
+                            // ]);
                         }else{
                             $add = 'KWH meter Anda saat ini versi KRN43 dan tidak diperlukan update.';
-                            $session->session_name = 'Start';
-                            $session->save();
+                            $session->delete();
                         }
                         $chat = 'Informasi Pelanggan
 IDPEL : '.$pel->idpel.'
@@ -47,8 +46,8 @@ Versi KWH : KRN'.$pel->vkrn.'
 '.$add;
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat,
-                            'reply_markup' => $reply_markup
+                            'text' => $chat
+                            // 'reply_markup' => $reply_markup
                         ]);
                     }
                 }elseif($session->session_name == 'Input Number'){
@@ -60,7 +59,8 @@ Versi KWH : KRN'.$pel->vkrn.'
                 $response = Telegram::sendMessage([
                     'chat_id' => $chat_id,
                     'text' => 'Perintah tidak ditemukan! Mulai dengan perintah "/start"'
-                ]);            }
+                ]);
+            }
         }else{
             $message = strtolower($message);
             if($message == '/start'){
