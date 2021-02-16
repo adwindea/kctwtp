@@ -11,7 +11,7 @@ class BotHandlerController extends Controller
         $updates = Telegram::getWebhookUpdates();
 
         $chat_id = $updates->getMessage()->getChat()->getId();
-        if($updates->getText() == '/start'){
+        if($updates->getMessage()->getText() == '/start'){
             $response = Telegram::sendMessage([
                 'chat_id' => $chat_id,
                 'text' => 'Selamat datang!'
