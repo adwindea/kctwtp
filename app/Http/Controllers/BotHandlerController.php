@@ -19,7 +19,7 @@ class BotHandlerController extends Controller
 
         // $messageId = $response->getMessageId();
 
-        return 'ok';        // dd(Telegram::getUpdates());
+        // dd(Telegram::getUpdates());
         // $updates = Telegram::getWebhookUpdates();
         if($updates->getText == '/start'){
             $chat_id = $updates['chat']['id'];
