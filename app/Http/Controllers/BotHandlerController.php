@@ -28,6 +28,10 @@ class BotHandlerController extends Controller
         }
     }
 
+    function unsetWebhook(){
+        Telegram::deleteWebhook();
+    }
+
     function startSession($chat_id, $message){
         $message = strtolower($message);
         if($message == '/start'){
@@ -35,7 +39,7 @@ class BotHandlerController extends Controller
                 'chat_id' => $chat_id,
                 'text' => 'Halo, silahkan masukkan nomor meter anda untuk memulai.'
             ]);
-            $session = new TelegramSession;
+            $session = new \App\Models\TelegramSession;
             $session->chat_id = $chat_id;
             $session->session_name = 'Start';
             $session->save();
