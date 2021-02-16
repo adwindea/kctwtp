@@ -57,8 +57,8 @@ class BotHandlerController extends Controller
             if(!empty($pel)){
                 $add = '';
                 $reply_markup = '';
-                if($pel->upgraded == 0 and ($pel->vkrn == 41 or $pel->vkrn == 42)){
-                    $add = 'KWH meter Anda saat ini versi KRN'.$pel->vkrn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
+                if($pel->upgraded == 0 and ($pel->krn == 41 or $pel->krn == 42)){
+                    $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
                     $keyboard = ['Update'];
                     $reply_markup = Telegram::replyKeyboardMarkup([
                         'keyboard' => $keyboard,
@@ -71,7 +71,7 @@ class BotHandlerController extends Controller
                     $session->save();
                 }
                 $chat = 'Informasi Pelanggan
-IDPEL : '.$pel->idpel.'
+IDPEL : '.$pel->id_pel.'
 Nama : '.$pel->nama.'
 Tarif : '.$pel->tarif.'
 Daya : '.number_format($pel->daya, 0, '', '').'
