@@ -80,16 +80,7 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                 }elseif($message == '/reset'){
                     $session->delete();
                 }
-            }elseif($session->session_name == 'Show Data' and $message != 'Update' and $message != '/reset'){
-                $chat = '';
-                $response = Telegram::sendMessage([
-                    'chat_id' => $chat_id,
-                    'text' => $chat
-                ]);
-            }elseif($message == '/reset'){
-                $session->delete();
-            }
-        }else{
+            }else{
                 $response = Telegram::sendMessage([
                     'chat_id' => $chat_id,
                     'text' => 'Perintah tidak ditemukan! Mulai dengan perintah "/start"'
