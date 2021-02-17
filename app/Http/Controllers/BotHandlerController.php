@@ -7,6 +7,10 @@ use Telegram;
 
 class BotHandlerController extends Controller
 {
+    public function telegramHandler2(){
+        dd(Telegram::getWebhookUpdates());
+
+    }
     public function telegramHandler(){
         $updates = Telegram::getWebhookUpdates();
 
@@ -28,17 +32,17 @@ class BotHandlerController extends Controller
                             $session->session_name = 'Show Data';
                             $session->save();
                             $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
-                            $keyboard = [
-                                ['7', '8', '9'],
-                                ['4', '5', '6'],
-                                ['1', '2', '3'],
-                                    ['0']
-                            ];
-                            $reply_markup = Telegram::replyKeyboardMarkup([
-                                'keyboard' => $keyboard,
-                                'resize_keyboard' => true,
-                                'one_time_keyboard' => true
-                            ]);
+                            // $keyboard = [
+                            //     ['7', '8', '9'],
+                            //     ['4', '5', '6'],
+                            //     ['1', '2', '3'],
+                            //         ['0']
+                            // ];
+                            // $reply_markup = Telegram::replyKeyboardMarkup([
+                            //     'keyboard' => $keyboard,
+                            //     'resize_keyboard' => true,
+                            //     'one_time_keyboard' => true
+                            // ]);
                         }else{
                             $session->session_name = 'Start';
                             $session->save();
@@ -54,8 +58,8 @@ Versi KWH : KRN'.$pel->vkrn.'
 '.$add;
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat,
-                            'reply_markup' => $reply_markup
+                            'text' => $chat
+                            // 'reply_markup' => $reply_markup
                         ]);
                     }else{
                         $session->session_name = 'Start';
