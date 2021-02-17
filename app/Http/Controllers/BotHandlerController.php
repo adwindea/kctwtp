@@ -27,8 +27,7 @@ class BotHandlerController extends Controller
                         if($pel->upgraded == 0 and ($pel->vkrn == 41 or $pel->vkrn == 42)){
                             $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
                             $keyboard = [
-                                ['text'=> 'Update',
-                                'callback_data'=> 'Update']
+                                ['text'=> 'Update']
                             ];
                             $reply_markup = Telegram::replyKeyboardMarkup([
                                 'keyboard' => $keyboard,
