@@ -32,17 +32,14 @@ class BotHandlerController extends Controller
                             $session->session_name = 'Show Data';
                             $session->save();
                             $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
-                            // $keyboard = [
-                            //     ['7', '8', '9'],
-                            //     ['4', '5', '6'],
-                            //     ['1', '2', '3'],
-                            //         ['0']
-                            // ];
-                            // $reply_markup = Telegram::replyKeyboardMarkup([
-                            //     'keyboard' => $keyboard,
-                            //     'resize_keyboard' => true,
-                            //     'one_time_keyboard' => true
-                            // ]);
+                            $keyboard = [
+                                ['Benar', 'Salah']
+                            ];
+                            $reply_markup = Telegram::replyKeyboardMarkup([
+                                'keyboard' => json_encode($keyboard),
+                                'resize_keyboard' => true,
+                                'one_time_keyboard' => true
+                            ]);
                         }else{
                             $session->session_name = 'Start';
                             $session->save();
