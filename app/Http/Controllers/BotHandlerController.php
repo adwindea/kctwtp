@@ -49,7 +49,7 @@ Versi KWH : KRN'.$pel->vkrn.'
 '.$add;
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat
+                            'text' => $chat,
                             'reply_markup' => $reply_markup
                         ]);
                     }else{
