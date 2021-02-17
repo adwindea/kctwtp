@@ -27,8 +27,8 @@ class BotHandlerController extends Controller
                         if($pel->upgraded == 0 and ($pel->vkrn == 41 or $pel->vkrn == 42)){
                             $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
                             $keyboard = [
-                                ['text'=> 'Benar'],
-                                ['text'=> 'Salah']
+                                ['text'=> 'Update',
+                                'callback_data'=> 'Update']
                             ];
                             $reply_markup = Telegram::replyKeyboardMarkup([
                                 'keyboard' => $keyboard,
@@ -62,6 +62,17 @@ Versi KWH : KRN'.$pel->vkrn.'
                             'text' => $chat
                         ]);
                     }
+                }elseif($session->session_name == 'Update' and $message != '/reset'){
+                    $pel = \App\Models\Pelanggan::where('no_meter', $session->last_message)->first();
+                    $chat = 'Masukkan nomor token berikut secara berurutan dan tekan enter di setiap nomor tokennya.
+<b>KCT1</b>: '.$pel->kct1a.'
+<b>KCT2</b>: '.$pel->kct1b.'
+Pastikan semua token terisi dengan benar, lalu perhatikan layar KWH meter Anda.
+Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
+                    $response = Telegram::sendMessage([
+                        'chat_id' => $chat_id,
+                        'text' => $chat
+                    ]);
                 }elseif($message == '/reset'){
                     $session->delete();
                 }
