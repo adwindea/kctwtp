@@ -26,14 +26,14 @@ class BotHandlerController extends Controller
                         $reply_markup = '';
                         if($pel->upgraded == 0 and ($pel->vkrn == 41 or $pel->vkrn == 42)){
                             $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
-                            $keyboard = [
-                                ['text'=> 'Update']
-                            ];
-                            $reply_markup = Telegram::replyKeyboardMarkup([
-                                'keyboard' => $keyboard,
-                                'resize_keyboard' => true,
-                                'one_time_keyboard' => true
-                            ]);
+                            // $keyboard = [
+                            //     ['text'=> 'Update']
+                            // ];
+                            // $reply_markup = Telegram::replyKeyboardMarkup([
+                            //     'keyboard' => $keyboard,
+                            //     'resize_keyboard' => true,
+                            //     'one_time_keyboard' => true
+                            // ]);
                         }else{
                             $session->session_name = 'Start';
                             $session->save();
@@ -49,8 +49,8 @@ Versi KWH : KRN'.$pel->vkrn.'
 '.$add;
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat,
-                            'reply_markup' => $reply_markup
+                            'text' => $chat
+                            // 'reply_markup' => $reply_markup
                         ]);
                     }else{
                         $session->session_name = 'Start';
