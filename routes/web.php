@@ -34,4 +34,5 @@ Route::post('/confirmUpgrade', [App\Http\Controllers\OfficeController::class, 'c
 
 Route::post('/1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
 Route::get('/1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
+Route::post('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/unsetWebhook', [App\Http\Controllers\BotHandlerController::class, 'unsetWebhook'])->name('unsetWebhook');
