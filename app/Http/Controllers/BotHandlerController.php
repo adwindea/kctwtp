@@ -23,7 +23,7 @@ class BotHandlerController extends Controller
                     $pel = \App\Models\Pelanggan::where('no_meter', $message)->first();
                     if(!empty($pel)){
                         $add = '';
-                        // $reply_markup = '';
+                        $reply_markup = '';
                         if($pel->upgraded == 0 and ($pel->vkrn == 41 or $pel->vkrn == 42)){
                             $add = 'KWH meter Anda saat ini versi KRN'.$pel->krn.'. Diperlukan update ke versi KRN43. Silahkan tekan tombol "Update" untuk mendapatkan token untuk update software';
                             $keyboard = [
@@ -50,7 +50,7 @@ Versi KWH : KRN'.$pel->vkrn.'
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
                             'text' => $chat
-                            // 'reply_markup' => $reply_markup
+                            'reply_markup' => $reply_markup
                         ]);
                     }else{
                         $session->session_name = 'Start';
