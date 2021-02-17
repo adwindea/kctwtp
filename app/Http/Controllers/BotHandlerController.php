@@ -8,7 +8,7 @@ use Telegram;
 class BotHandlerController extends Controller
 {
     public function telegramHandler2(){
-        dd(Telegram::getWebhookUpdates());
+        dd(Telegram::getUpdates());
 
     }
     public function telegramHandler(){
