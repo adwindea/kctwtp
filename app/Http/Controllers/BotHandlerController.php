@@ -36,7 +36,7 @@ class BotHandlerController extends Controller
                                 ['Benar', 'Salah']
                             ];
                             $reply_markup = Telegram::replyKeyboardMarkup([
-                                'keyboard' => json_encode($keyboard),
+                                'keyboard' => $keyboard,
                                 'resize_keyboard' => true,
                                 'one_time_keyboard' => true
                             ]);
@@ -55,8 +55,8 @@ Versi KWH : KRN'.$pel->vkrn.'
 '.$add;
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat
-                            // 'reply_markup' => $reply_markup
+                            'text' => $chat,
+                            'reply_markup' => json_encode($reply_markup)
                         ]);
                     }else{
                         $session->session_name = 'Start';
@@ -80,6 +80,10 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                     ]);
                 }elseif($message == '/reset'){
                     $session->delete();
+                    $response = Telegram::sendMessage([
+                        'chat_id' => $chat_id,
+                        'text' => 'Mulai dengan perintah "/start"'
+                    ]);
                 }
             }else{
                 $response = Telegram::sendMessage([
