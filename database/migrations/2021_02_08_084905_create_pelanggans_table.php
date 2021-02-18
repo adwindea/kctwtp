@@ -36,6 +36,8 @@ class CreatePelanggansTable extends Migration
             $table->boolean('confirmed')->nullable(true)->default(0);
             $table->dateTime('confirmed_at')->nullable(true);
             $table->bigInteger('confirmed_by')->nullable(true);
+            $table->decimal('lat', 10, 8)->nullable(true);
+            $table->decimal('long', 11, 8)->nullable(true);
             $table->softDeletes();
         });
     }

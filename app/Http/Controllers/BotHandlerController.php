@@ -20,6 +20,7 @@ class BotHandlerController extends Controller
         $updates = Telegram::getWebhookUpdates();
 
         $photo = false;
+        $location = false;
         if($updates->isType('callback_query')){
             $chat_id = $updates->callbackQuery->from->id;
             $message = $updates->callbackQuery->data;
@@ -29,6 +30,10 @@ class BotHandlerController extends Controller
             $message =  $photo[2]['file_id'];
             $message = Telegram::getFile(['file_id' => $message])->file_path;
             $photo = true;
+        }elseif($updates->getMessage()->has('location')){
+            $chat_id = $updates->getMessage()->getChat()->getId();
+            $message = $updates->getMessage()->getLocation();
+            $location = true;
         }else{
             $chat_id = $updates->getMessage()->getChat()->getId();
             $message = $updates->getMessage()->getText();
@@ -56,6 +61,20 @@ class BotHandlerController extends Controller
                                         Keyboard::inlineButton(['text' => 'Reset', 'callback_data' => '/reset'])
                                     ]
                                 ];
+                            }elseif($pel->upgraded == 1 and $pel->confirmed == 0){
+                                $chat = 'KWH meter Anda sudah diperbarui dan sedang menunggu konfirmasi dari petugas. Silahkan cek beberapa saat lagi.';
+                                $response = Telegram::sendMessage([
+                                    'chat_id' => $chat_id,
+                                    'text' => $chat,
+                                    'reply_markup' => $this->resetButton()
+                                ]);
+                            }elseif($pel->upgraded == 1 and $pel->confirmed == 0){
+                                $chat = 'KWH meter Anda sudah diperbarui dan sudah dikonfirmasi oleh petugas. Terima kasih telah melakukan pembaruan perangkat lunak KWH meter.';
+                                $response = Telegram::sendMessage([
+                                    'chat_id' => $chat_id,
+                                    'text' => $chat,
+                                    'reply_markup' => $this->resetButton()
+                                ]);
                             }else{
                                 $session->session_name = 'Start';
                                 $session->save();
@@ -93,6 +112,11 @@ Versi KWH : KRN'.$pel->vkrn.'
                         }
                     }elseif($message == '/reset'){
                         $this->resetSession($chat_id, $session);
+                    }else{
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => 'Perintah tidak ditemukan!',
+                        ]);
                     }
                 }elseif($session->session_name == 'Show Data'){
                     if($message == 'Update'){
@@ -166,6 +190,13 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                                 'reply_markup' => $reply_markup
                             ]);
                         }
+                    }elseif($message == '/reset'){
+                        $this->resetSession($chat_id, $session);
+                    }else{
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => 'Perintah tidak ditemukan!',
+                        ]);
                     }
                 }elseif($session->session_name == 'Update 2'){
                     if($message == 'Benar'){
@@ -229,6 +260,32 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         ]);
                     }elseif($message == '/reset'){
                         $this->resetSession($chat_id, $session);
+                    }else{
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => 'Perintah tidak ditemukan!',
+                        ]);
+                    }
+                }elseif($session->session_name == "Upload Photo"){
+                    if($location){
+                        $pel = \App\Models\Pelanggan::where('no_meter', $session->last_message)->first();
+                        $pel->lat = $message->latitude;
+                        $pel->long = $message->longitude;
+                        $pel->save();
+                        $session->delete();
+                    }elseif(!$location){
+                        $chat = 'Silahkan tekan tombol selesai untuk mengakhiri sesi.';
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => $chat
+                        ]);
+                    }else if($message == '/reset'){
+                        $this->resetSession($chat_id, $session);
+                    }else{
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => 'Perintah tidak ditemukan!',
+                        ]);
                     }
                 }
             }else{
@@ -290,6 +347,21 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
         }
     }
     function resetSession($chat_id, $session){
+        if(!empty($session->last_message)){
+            $pel = \App\Models\Pelanggan::where('no_meter', $session->last_message)->first();
+            $pel->krn = $pel->krn_lama;
+            $pel->vkrn = $pel->vkrn_lama;
+            $pel->kct1 = false;
+            $pel->kct2 = false;
+            $pel->upgraded = 0;
+            $pel->upgraded_at = null;
+            $pel->confirmed = 0;
+            $pel->confirmed_at = null;
+            $pel->confirmed_by = null;
+            $pel->lat = null;
+            $pel->long = null;
+            $pel->save();
+        }
         $session->delete();
         $response = Telegram::sendMessage([
             'chat_id' => $chat_id,
