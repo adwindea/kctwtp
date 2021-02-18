@@ -1,2 +1,5 @@
-bot kalau udah upgraded 1 atau confirmed 1 dikasih message
-kalau belum upgraded 1, diulang update kct, kct1 kct2 update lagi
+bot kalau udah upgraded 1 atau confirmed 1 dikasih message OK
+kalau belum upgraded 1, diulang update kct, kct1 kct2 update lagi OK
+
+location webapp error
+filter

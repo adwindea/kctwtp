@@ -106,9 +106,9 @@
         <button class="btn btn-danger" onclick="">Salah</button>
         <button class="btn btn-success float-right" onclick="setKct2()">Benar</button>
     </div>
-<div class="konfirmasi">
+    <div class="konfirmasi">
         <button class="btn btn-default" onclick="getBack()">Kembali</button>
-        <button class="btn btn-success float-right" onclick="submitData()">Kirim</button>
+        <button class="btn btn-success float-right" onclick="getLoc()">Kirim</button>
     </div>
 @stop
 
@@ -166,21 +166,17 @@
         $('.konfirmasi').slideUp();
         $('.kct1').slideDown();
     }
-    function submitData(){
-        var lat
-        var long
-
+    function getLoc(){
         if ("geolocation" in navigator){ //check geolocation available
             //try to get user current location using getCurrentPosition() method
             navigator.geolocation.getCurrentPosition(function(position){
-                lat = position.coords.latitude;
-                long = position.coords.longitude;
+                submitData(position);
             });
         }
-
+    }
+    function submitData(position){
         var id = '{{ Crypt::encrypt($pel->id) }}';
         var img = $('#img').val();
-
         if(img == '' || img == null){
             $('#warning').show().fadeOut(5000);
         }else{
@@ -192,8 +188,8 @@
                     _token: "{{ csrf_token() }}",
                     id: id,
                     img: img,
-                    lat: lat,
-                    long: long
+                    lat: position.coords.latitude,
+                    long: position.coords.longitude
                 },
                 dataType: 'json',
                 success: function (data) {
