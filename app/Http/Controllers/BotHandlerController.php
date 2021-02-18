@@ -165,7 +165,6 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         $session->save();
                         $btn = Keyboard::button([
                             'text' => 'Selesai',
-                            'request_contact' => true,
                             'request_location' => true
                         ]);
                         $keyboard = Keyboard::make([
