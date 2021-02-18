@@ -76,6 +76,7 @@
                                 <th class="text-center">KCT1</th>
                                 <th class="text-center">KCT2</th>
                                 <th class="text-center">Tanggal Input</th>
+                                <th class="text-center">Lokasi Input</th>
                                 <th class="text-center">Tanggal Konfirmasi</th>
                                 <th class="text-center">Konfirmasi Oleh</th>
                             </tr>
@@ -155,7 +156,7 @@
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'}, //0
             {data: 'status', name: 'status'}, //1
-            {data: 'img', name: 'img'}, //3
+            {data: 'img', name: 'img'}, //2
             {data: 'idpel', name: 'idpel'}, //3
             {data: 'no_meter', name: 'no_meter'}, //4
             {data: 'nama', name: 'nama'}, //5
@@ -171,14 +172,15 @@
             {data: 'kct1', name: 'kct1'}, //15
             {data: 'kct2', name: 'kct2'}, //16
             {data: 'upgraded_at', name: 'upgraded_at'}, //17
-            {data: 'confirmed_at', name: 'confirmed_at'}, //18
-            {data: 'username', name: 'username'}, //19
+            {data: 'location', name: 'location'}, //18
+            {data: 'confirmed_at', name: 'confirmed_at'}, //19
+            {data: 'username', name: 'username'}, //20
         ],
         columnDefs: [
-            { visible: false, targets: [ 2, 11, 12, 13, 14, 15, 16, 17, 18, 19] },
-            { className: "text-center", targets: [ 0, 1, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] },
-            { searchable: false, targets: [ 0, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ] },
-            { orderable: false, targets: [ 0, 11, 12, 13, 14 ] }
+            { visible: false, targets: [ 2, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { className: "text-center", targets: [ 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+            { searchable: false, targets: [ 0, 1, 2, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ] },
+            { orderable: false, targets: [ 0, 11, 12, 13, 14, 18 ] }
         ],
         dom:
             "<'row'<'col-lg-12 col-md-12 col-12'B>>" +

@@ -55,6 +55,13 @@ class OfficeController extends Controller
             }
             return $kct2;
         })
+        ->addColumn('location', function($pel){
+            $location = '';
+            if(!empty($pel->lat) and !empty($pel->long)){
+                $location = '<a class="btn btn-sm btn-success" href="https://www.google.com/maps/search/?api=1&amp;query='.$pel->lat.','.$pel->long.'" target="_blank" title="Open Google Maps"><i class="fa fa-map"></i></a>';
+            }
+            return $location;
+        })
         ->removeColumn('id')
         ->addIndexColumn()
         ->rawColumns(['status', 'img', 'kct1', 'kct2'])

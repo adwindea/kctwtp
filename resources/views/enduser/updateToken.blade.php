@@ -167,6 +167,17 @@
         $('.kct1').slideDown();
     }
     function submitData(){
+        var lat
+        var long
+
+        if ("geolocation" in navigator){ //check geolocation available
+            //try to get user current location using getCurrentPosition() method
+            navigator.geolocation.getCurrentPosition(function(position){
+                lat = position.coords.latitude;
+                long = position.coords.longitude;
+            });
+        }
+
         var id = '{{ Crypt::encrypt($pel->id) }}';
         var img = $('#img').val();
 
@@ -180,7 +191,9 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     id: id,
-                    img: img
+                    img: img,
+                    lat: lat,
+                    long: long
                 },
                 dataType: 'json',
                 success: function (data) {

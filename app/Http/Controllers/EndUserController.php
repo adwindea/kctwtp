@@ -48,6 +48,8 @@ class EndUserController extends Controller
     public function submitUpgrade(Request $request){
         $id = $request->id;
         $img = $request->img;
+        $lat = $request->lat;
+        $long = $request->long;
         $id = Crypt::decrypt($id);
         $pel = \App\Models\Pelanggan::where('id', $id)->first();
         if(!empty($img)){
@@ -69,6 +71,8 @@ class EndUserController extends Controller
         $pel->upgraded_at = date('Y-m-d H:i:s');
         $pel->krn = 3;
         $pel->vkrn = 43;
+        $pel->lat = $lat;
+        $pel->long = $long;
         $pel->save();
         return response()->json( array('success' => true) );
     }
