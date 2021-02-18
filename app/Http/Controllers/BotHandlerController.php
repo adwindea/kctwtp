@@ -163,11 +163,6 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         $pel->save();
                         $session->session_name = 'Done Update';
                         $session->save();
-                        $chat = 'Tekan angka 04 pada KWH meter Anda, lalu foto layar KWH meter Anda dan kirim ke chat ini.';
-                        $response = Telegram::sendMessage([
-                            'chat_id' => $chat_id,
-                            'text' => $chat
-                        ]);
                         $btn = Keyboard::button([
                             'text' => 'Selesai',
                             'request_contact' => true,
@@ -178,13 +173,18 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                             'resize_keyboard' => true,
                             'one_time_keyboard' => true
                         ]);
+                        $chat = 'Tekan angka 04 pada KWH meter Anda, lalu foto layar KWH meter Anda dan kirim ke chat ini.';
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => $chat,
+                            'reply_markup' => $keyboard
+                        ]);
                     }elseif($message == '/reset'){
                         $this->resetSession($chat_id, $session);
                     }else{
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
                             'text' => 'Perintah tidak ditemukan!',
-                            'reply_markup' => $keyboard
                         ]);
                     }
                 }elseif($session->session_name == 'Done Update'){
