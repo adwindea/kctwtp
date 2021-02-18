@@ -168,12 +168,23 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                             'chat_id' => $chat_id,
                             'text' => $chat
                         ]);
+                        $btn = Keyboard::button([
+                            'text' => 'Selesai',
+                            'request_contact' => true,
+                            'request_location' => true
+                        ]);
+                        $keyboard = Keyboard::make([
+                            'keyboard' => [[$btn]],
+                            'resize_keyboard' => true,
+                            'one_time_keyboard' => true
+                        ]);
                     }elseif($message == '/reset'){
                         $this->resetSession($chat_id, $session);
                     }else{
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => 'Perintah tidak ditemukan!'
+                            'text' => 'Perintah tidak ditemukan!',
+                            'reply_markup' => $keyboard
                         ]);
                     }
                 }elseif($session->session_name == 'Done Update'){
