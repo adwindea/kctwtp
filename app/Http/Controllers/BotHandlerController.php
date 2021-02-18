@@ -9,14 +9,19 @@ use Telegram\Bot\Keyboard\Keyboard;
 class BotHandlerController extends Controller
 {
     public function telegramHandler2(){
-        dd(Telegram::getUpdates());
+        echo var_dump(Telegram::getUpdates());
 
     }
     public function telegramHandler(){
         $updates = Telegram::getWebhookUpdates();
 
-        $chat_id = $updates->getMessage()->getChat()->getId();
-        $message = $updates->getMessage()->getText();
+        if($updates->isType('callback_query')){
+            $chat_id = $updates->callbackQuery->from->id;
+            $message = $updates->callbackQuery->data;
+        }else{
+            $chat_id = $updates->getMessage()->getChat()->getId();
+            $message = $updates->getMessage()->getText();
+        }
         // $response = Telegram::sendMessage([
         //     'chat_id' => $chat_id,
         //     'text' => $message
