@@ -9,7 +9,7 @@ use Telegram\Bot\Keyboard\Keyboard;
 class BotHandlerController extends Controller
 {
     public function telegramHandler2(){
-        echo var_dump(Telegram::getUpdates());
+        echo json_encode(Telegram::getUpdates());
 
     }
     public function telegramHandler(){
