@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Telegram;
 use Telegram\Bot\Keyboard\Keyboard;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
 
 class BotHandlerController extends Controller
 {
+    private $teleurl = "https://api.telegram.org/file/bot1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/";
+
     public function telegramHandler2(){
         echo json_encode(Telegram::getUpdates());
 
@@ -15,9 +19,16 @@ class BotHandlerController extends Controller
     public function telegramHandler(){
         $updates = Telegram::getWebhookUpdates();
 
+        $photo = false;
         if($updates->isType('callback_query')){
             $chat_id = $updates->callbackQuery->from->id;
             $message = $updates->callbackQuery->data;
+        }elseif($updates->getMessage()->has('photo')){
+            $chat_id = $updates->getMessage()->getChat()->getId();
+            $photo = $updates->getMessage()->getPhoto();
+            $message =  $photo[2]['file_id'];
+            $message = Telegram::getFile(['file_id' => $message])->file_path;
+            $photo = true;
         }else{
             $chat_id = $updates->getMessage()->getChat()->getId();
             $message = $updates->getMessage()->getText();
@@ -163,20 +174,10 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         $pel->save();
                         $session->session_name = 'Done Update';
                         $session->save();
-                        $btn = Keyboard::button([
-                            'text' => 'Selesai',
-                            'request_location' => true
-                        ]);
-                        $keyboard = Keyboard::make([
-                            'keyboard' => [[$btn]],
-                            'resize_keyboard' => true,
-                            'one_time_keyboard' => true
-                        ]);
-                        $chat = 'Tekan angka 04 pada KWH meter Anda, lalu foto layar KWH meter Anda dan kirim ke chat ini.';
+                        $chat = 'Tekan angka 04 pada KWH meter Anda, lalu foto layar KWH meter Anda dan kirim ke chat ini dan tekan tombol selesai.';
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat,
-                            'reply_markup' => $keyboard
+                            'text' => $chat
                         ]);
                     }elseif($message == '/reset'){
                         $this->resetSession($chat_id, $session);
@@ -187,7 +188,46 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         ]);
                     }
                 }elseif($session->session_name == 'Done Update'){
-                    if($message == '/reset'){
+                    if($message != '/reset' and $photo){
+                        $pel = \App\Models\Pelanggan::where('no_meter', $session->last_message)->first();
+                        $client = new Client([
+                            'base_uri' => $this->teleurl,
+                            'timeout'  => 120.0,
+                        ]);
+                        $res = $client->request('GET', $message);
+                        $s3name = 'image/upgrade/'.$pel->idpel.'.png';
+                        Storage::disk('s3')->put($s3name, $res->getBody());
+                        $filename = Storage::disk('s3')->url($s3name);
+                        $pel->img = $filename;
+                        $pel->upgraded = true;
+                        $pel->upgraded_at = date('Y-m-d H:i:s');
+                        $pel->krn = 3;
+                        $pel->vkrn = 43;
+                        $pel->save();
+                        $session->session_name = 'Upload Photo';
+                        $session->save();
+                        $btn = Keyboard::button([
+                            'text' => 'Selesai',
+                            'request_location' => true
+                        ]);
+                        $keyboard = Keyboard::make([
+                            'keyboard' => [[$btn]],
+                            'resize_keyboard' => true,
+                            'one_time_keyboard' => true
+                        ]);
+                        $chat = 'Foto sudah kami terima. Terima kasih telah melakukan update software KWH meter. Silahkan tekan tombol selesai dibawah untuk mengakhiri sesi.';
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => $chat,
+                            'reply_markup' => $keyboard
+                        ]);
+                    }elseif($message != '/reset' and !$photo){
+                        $chat = 'Silahkan kirim foto tampilan layar KWH meter anda.';
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => $chat
+                        ]);
+                    }elseif($message == '/reset'){
                         $this->resetSession($chat_id, $session);
                     }
                 }
