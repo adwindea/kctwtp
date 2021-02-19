@@ -62,19 +62,19 @@ class BotHandlerController extends Controller
                                     ]
                                 ];
                             }elseif($pel->upgraded == 1 and $pel->confirmed == 0){
-                                $chat = 'KWH meter Anda sudah diperbarui dan sedang menunggu konfirmasi dari petugas. Silahkan cek beberapa saat lagi.';
-                                $response = Telegram::sendMessage([
-                                    'chat_id' => $chat_id,
-                                    'text' => $chat,
-                                    'reply_markup' => $this->resetButton()
-                                ]);
+                                $add = 'KWH meter Anda sudah diperbarui dan sedang menunggu konfirmasi dari petugas. Silahkan cek beberapa saat lagi.';
+                                $keyboard = [
+                                    [
+                                        Keyboard::inlineButton(['text' => 'Reset', 'callback_data' => '/reset'])
+                                    ]
+                                ];
                             }elseif($pel->upgraded == 1 and $pel->confirmed == 0){
-                                $chat = 'KWH meter Anda sudah diperbarui dan sudah dikonfirmasi oleh petugas. Terima kasih telah melakukan pembaruan perangkat lunak KWH meter.';
-                                $response = Telegram::sendMessage([
-                                    'chat_id' => $chat_id,
-                                    'text' => $chat,
-                                    'reply_markup' => $this->resetButton()
-                                ]);
+                                $add = 'KWH meter Anda sudah diperbarui dan sudah dikonfirmasi oleh petugas. Terima kasih telah melakukan pembaruan perangkat lunak KWH meter.';
+                                $keyboard = [
+                                    [
+                                        Keyboard::inlineButton(['text' => 'Reset', 'callback_data' => '/reset'])
+                                    ]
+                                ];
                             }else{
                                 $session->session_name = 'Start';
                                 $session->save();
