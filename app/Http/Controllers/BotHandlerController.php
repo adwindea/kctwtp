@@ -126,7 +126,10 @@ Versi KWH : KRN'.$pel->vkrn.'
                         $keyboard = [
                             [
                                 Keyboard::inlineButton(['text' => 'Benar', 'callback_data' => 'Benar']),
-                                Keyboard::inlineButton(['text' => 'Salah', 'callback_data' => '/reset'])
+                                Keyboard::inlineButton(['text' => 'Salah', 'callback_data' => 'Salah'])
+                            ],
+                            [
+                                Keyboard::inlineButton(['text' => 'Reset', 'callback_data' => '/reset'])
                             ]
                         ];
                         $reply_markup = $this->replyMarkup($keyboard);
@@ -153,17 +156,23 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         ]);
                     }
                 }elseif($session->session_name == 'Update'){
-                    if($message == 'Benar'){
+                    if(in_array($message, ['Benar', 'Salah'])){
                         $pel = \App\Models\Pelanggan::where('no_meter', $session->last_message)->first();
-                        $pel->kct1 = true;
-                        $pel->save();
+                        if($message == 'Benar'){
+                            $pel->kct1 = true;
+                            $pel->save();
+                        }elseif($message == 'Salah'){
+                            $pel->kct1 = false;
+                            $pel->save();
+                        }
                         if($pel->vkrn == 41){
                             $session->session_name = 'Done Update';
                             $session->save();
                             $chat = 'Tekan angka 04 pada KWH meter Anda, lalu foto layar KWH meter Anda dan kirim ke chat ini.';
                             $response = Telegram::sendMessage([
                                 'chat_id' => $chat_id,
-                                'text' => $chat
+                                'text' => $chat,
+                                'reply_markup' => $this->resetButton()
                             ]);
                         }elseif($pel->vkrn == 42){
                             $session->session_name = 'Update 2';
@@ -171,7 +180,10 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                             $keyboard = [
                                 [
                                     Keyboard::inlineButton(['text' => 'Benar', 'callback_data' => 'Benar']),
-                                    Keyboard::inlineButton(['text' => 'Salah', 'callback_data' => '/reset'])
+                                    Keyboard::inlineButton(['text' => 'Salah', 'callback_data' => 'Salah'])
+                                ],
+                                [
+                                    Keyboard::inlineButton(['text' => 'Reset', 'callback_data' => '/reset'])
                                 ]
                             ];
                             $reply_markup = $this->replyMarkup($keyboard);
@@ -199,16 +211,22 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         ]);
                     }
                 }elseif($session->session_name == 'Update 2'){
-                    if($message == 'Benar'){
+                    if(in_array($message, ['Benar', 'Salah'])){
                         $pel = \App\Models\Pelanggan::where('no_meter', $session->last_message)->first();
-                        $pel->kct2 = true;
-                        $pel->save();
+                        if($message == 'Benar'){
+                            $pel->kct2 = true;
+                            $pel->save();
+                        }elseif($message == 'Salah'){
+                            $pel->kct2 = false;
+                            $pel->save();
+                        }
                         $session->session_name = 'Done Update';
                         $session->save();
                         $chat = 'Tekan angka 04 pada KWH meter Anda, lalu foto layar KWH meter Anda dan kirim ke chat ini dan tekan tombol selesai.';
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat
+                            'text' => $chat,
+                            'reply_markup' => $this->resetButton()
                         ]);
                     }elseif($message == '/reset'){
                         $this->resetSession($chat_id, $session);
