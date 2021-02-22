@@ -11,29 +11,50 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                {{-- <div class="card-header">
+                <div class="card-header">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                             <form id="form-filter">
                                 <div id="filterbox" class="collapse">
                                     <div class="row">
-                                        <div class="col-md-3 col-sm-6 col-12">
-                                            <label>From: </label>
-                                            <input type="text" class="form-control datepicker" id="from" autocomplete="off">
-                                        </div>
-                                        <div class="col-md-3 col-sm-6 col-12">
-                                            <label>To: </label>
-                                            <input type="text" class="form-control datepicker" id="to" autocomplete="off">
-                                        </div>
-                                        <div class="col-md-6 col-sm-12 col-12">
-                                            <label>Category: </label>
-                                            <select class="form-control select2bs4" multiple="multiple" id="category" style="width: 100%;">
-                                                @isset($categories)
-                                                    @foreach($categories as $cat)
-                                                <option value="{{ \Crypt::encrypt($cat->id) }}">{{ $cat->category_name }}</option>
-                                                    @endforeach
-                                                @endisset
+                                        <div class="col-md-4 col-12">
+                                            <label>Status: </label>
+                                            <select class="form-control select2bs4" id="status" style="width: 100%;">
+                                                <option value="">Semua</option>
+                                                <option value="0">Belum diperbaharui</option>
+                                                <option value="1">Diperbaharui</option>
+                                                <option value="2">Dikonfirmasi</option>
                                             </select>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <label>VKRN: </label>
+                                            <select class="form-control select2bs4" id="vkrn" style="width: 100%;">
+                                                <option value="">Semua</option>
+                                                <option value="41">41</option>
+                                                <option value="42">42</option>
+                                                <option value="43">43</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <label>Konfirmasi Oleh: </label>
+                                            <select class="form-control select2bs4" id="user" style="width: 100%;">
+                                                <option value="">Semua</option>
+                                                @if(!empty($user))
+                                                    @foreach($user as $u)
+                                                        <option value="{{Crypt::encrypt($u->id)}}">{{$u->name}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Tanggal Input: </label>
+                                            <input type="text" id="upgraded_date" class="form-control drp" placeholder="" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Tanggal Konfirmasi: </label>
+                                            <input type="text" id="confirmed_date" class="form-control drp" placeholder="" autocomplete="off">
                                         </div>
                                     </div>
                                     <br>
@@ -53,7 +74,7 @@
                             <a data-toggle="collapse" class="btn btn-primary pull-right btn-xs btn-flat collapsed" href="#filterbox" aria-expanded="false"><i class="fa fa-filter"></i> Filter box</a>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <div class="card-body">
                     <table class="table" id="pelanggan_table" cellspacing="0" width="100%">
                         <thead>
@@ -120,6 +141,7 @@
 @section('css')
 <link href="/datatables/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 <link href="/datatables/datatables-buttons/css/buttons.bootstrap4.min.css" rel="stylesheet">
+<link href="/assets/daterangepicker/daterangepicker.css" rel="stylesheet">
 @stop
 
 @section('js')
@@ -133,7 +155,51 @@
 <script src="/datatables/JSZip-2.5.0/jszip.min.js"></script>
 <script src="/datatables/pdfmake-0.1.36/pdfmake.min.js"></script>
 <script src="/datatables/pdfmake-0.1.36/vfs_fonts.js"></script>
+<script src="/assets/daterangepicker/moment.min.js"></script>
+<script src="assets/daterangepicker/daterangepicker.js"></script>
+
 <script type="text/javascript">
+    var upgraded_date = {};
+    var confirmed_date = {};
+    $('#upgraded_date').daterangepicker({
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate: moment(),
+        locale: {
+            format: 'YYYY-MM-DD'
+        },
+	}, applyUpgraded);
+    $('#confirmed_date').daterangepicker({
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate: moment(),
+        locale: {
+            format: 'YYYY-MM-DD'
+        },
+	}, applyConfirmed);
+    function applyUpgraded(start, end){
+        upgraded_date.start = start.format('YYYY-MM-DD');
+        upgraded_date.end = end.format('YYYY-MM-DD');
+	}
+    function applyConfirmed(start, end){
+        confirmed_date.start = start.format('YYYY-MM-DD');
+        confirmed_date.end = end.format('YYYY-MM-DD');
+	}
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -145,12 +211,16 @@
         order: [],
         scrollX: true,
         stateSave: true,
-        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         ajax: {
             url: '{!! route('dataPelangganTable') !!}',
             type: "POST",
             data: function (data) {
-                data.tes = 1
+                data.status = $('#status').val();
+                data.krn = $('#vkrn').val();
+                data.user = $('#user').val();
+                data.upgraded_date = upgraded_date;
+                data.confirmed_date = confirmed_date;
             }
         },
         columns: [
@@ -229,6 +299,18 @@
             searchPlaceholder: "Search records",
             search: ""
         }
+    });
+    $('#btn-filter').click(function(){
+        table.ajax.reload();
+        initDate();
+    });
+    $('#btn-reset').click(function(){
+        upgraded_date.start = null;
+        upgraded_date.end = null;
+        confirmed_date.start = null;
+        confirmed_date.end = null;
+        $('#form-filter')[0].reset();
+        table.ajax.reload();
     });
     function confirmModal(img,id){
         $('#link').attr('href', img);

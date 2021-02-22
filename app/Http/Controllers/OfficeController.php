@@ -18,12 +18,46 @@ class OfficeController extends Controller
         return view('office.dashboard');
     }
     public function dataPelanggan(){
-        return view('office.dataPelanggan');
+        $data['user'] = \App\Models\User::all();
+        return view('office.dataPelanggan', $data);
     }
-    public function dataPelangganTable(){
+    public function dataPelangganTable(Request $request){
+        $status = $request->input('status');
+        $krn = $request->input('krn');
+        $user = $request->input('user');
+        $confirmed_date = $request->input('confirmed_date');
+        $upgraded_date = $request->input('upgraded_date');
         $pelanggan = \App\Models\Pelanggan::select('pelanggans.*', 'users.name as username')
-        ->leftJoin('users', 'pelanggans.confirmed_by', '=', 'users.id')
-        ->get();
+        ->leftJoin('users', 'pelanggans.confirmed_by', '=', 'users.id');
+        if(isset($status)){
+            if($status == 0){
+                $pelanggan = $pelanggan->where('upgraded', '=', 0)->where('confirmed', '=', 0);
+            }elseif($status == 1){
+                $pelanggan = $pelanggan->where('upgraded', '=', 1)->where('confirmed', '=', 0);
+            }elseif($status == 2){
+                $pelanggan = $pelanggan->where('upgraded', '=', 1)->where('confirmed', '=', 1);
+            }
+        }
+        if(!empty($krn)){
+            $pelanggan = $pelanggan->where('vkrn', '=', $krn);
+        }
+        if(!empty($user)){
+            $user = Crypt::decrypt($user);
+            $pelanggan = $pelanggan->where('confirmed_by', '=', $user);
+        }
+        if(!empty($confirmed_date['start'])){
+            $pelanggan = $pelanggan->where('confirmed_at', '>=', $confirmed_date['start']);
+        }
+        if(!empty($confirmed_date['end'])){
+            $pelanggan = $pelanggan->where('confirmed_at', '<=', $confirmed_date['end']);
+        }
+        if(!empty($upgraded_date['start'])){
+            $pelanggan = $pelanggan->where('upgraded_at', '>=', $upgraded_date['start']);
+        }
+        if(!empty($upgraded_date['end'])){
+            $pelanggan = $pelanggan->where('upgraded_at', '<=', $upgraded_date['end']);
+        }
+        $pelanggan = $pelanggan->get();
         return Datatables::of($pelanggan)
         ->addColumn('status', function ($pel) {
             $status = '<span class="badge badge-info">Not Updated</span>';
