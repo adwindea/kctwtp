@@ -244,6 +244,11 @@ return [
             'url'         => 'dataPelanggan',
             'icon'        => 'far fa-fw fa-file-alt'
         ],
+        [
+            'text'        => 'Data Pengguna',
+            'url'         => 'userList',
+            'icon'        => 'fas fa-users'
+        ],
         // [
         //     'text'        => 'pages',
         //     'url'         => 'admin/pages',

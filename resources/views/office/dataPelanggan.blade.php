@@ -286,7 +286,7 @@
             exportOptions: {
                 columns: ':visible'
             },
-            messageTop: 'Spending Data'
+            messageTop: 'Data Pelanggan'
         },{
             extend: 'colvis',
             className: 'btn btn-default',

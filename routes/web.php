@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Auth::routes();
+Route::post('logged_in', [App\Http\Controllers\Auth\LoginController::class, 'authenticate']);
 
 Route::get('/', [App\Http\Controllers\EndUserController::class, 'index'])->name('idForm');
 Route::post('/detailPel', [App\Http\Controllers\EndUserController::class, 'detailPel'])->name('detailPel');
@@ -37,3 +38,8 @@ Route::get('/1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/webhook', [App\Http\
 Route::post('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/unsetWebhook', [App\Http\Controllers\BotHandlerController::class, 'unsetWebhook'])->name('unsetWebhook');
+
+Route::get('/unAuth', [App\Http\Controllers\HomeController::class, 'unauthorizedAccess'])->name('unAuth');
+Route::get('/userList', [App\Http\Controllers\HomeController::class, 'userList'])->name('userList')->middleware('admin');
+Route::post('/userListTable', [App\Http\Controllers\HomeController::class, 'userListTable'])->name('userListTable')->middleware('admin');
+Route::post('/userActivation', [App\Http\Controllers\HomeController::class, 'userActivation'])->name('userActivation')->middleware('admin');
