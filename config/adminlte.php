@@ -249,6 +249,11 @@ return [
             'url'         => 'userList',
             'icon'        => 'fas fa-users'
         ],
+        [
+            'text'        => 'Import Data',
+            'url'         => 'importPage',
+            'icon'        => 'fas fa-file-excel'
+        ],
         // [
         //     'text'        => 'pages',
         //     'url'         => 'admin/pages',
