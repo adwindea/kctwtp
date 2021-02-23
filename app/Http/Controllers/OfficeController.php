@@ -19,7 +19,13 @@ class OfficeController extends Controller
         return view('office.dashboard');
     }
     public function dataPelanggan(){
-        $data['user'] = \App\Models\User::all();
+        if(Auth::user()->role == 'admin'){
+            $data['admin'] = true;
+            $data['user'] = \App\Models\User::all();
+        }else{
+            $data['admin'] = false;
+            $data['user'] = Auth::user();
+        }
         return view('office.dataPelanggan', $data);
     }
     public function dataPelangganTable(Request $request){
@@ -44,7 +50,7 @@ class OfficeController extends Controller
         }
         if(!empty($user)){
             $user = Crypt::decrypt($user);
-            $pelanggan = $pelanggan->where('confirmed_by', '=', $user);
+            $pelanggan = $pelanggan->where('pic', '=', $user);
         }
         if(!empty($confirmed_date['start'])){
             $pelanggan = $pelanggan->where('confirmed_at', '>=', $confirmed_date['start']);

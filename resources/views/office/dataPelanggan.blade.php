@@ -36,13 +36,17 @@
                                             </select>
                                         </div>
                                         <div class="col-md-4 col-12">
-                                            <label>Konfirmasi Oleh: </label>
+                                            <label>PIC: </label>
                                             <select class="form-control select2bs4" id="user" style="width: 100%;">
-                                                <option value="">Semua</option>
                                                 @if(!empty($user))
-                                                    @foreach($user as $u)
-                                                        <option value="{{Crypt::encrypt($u->id)}}">{{$u->name}}</option>
-                                                    @endforeach
+                                                    @if($admin)
+                                                        <option value="">Semua</option>
+                                                        @foreach($user as $u)
+                                                            <option value="{{Crypt::encrypt($u->id)}}">{{$u->name}}</option>
+                                                        @endforeach
+                                                    @else
+                                                        <option value="{{Crypt::encrypt($user->id)}}" selected>{{$user->name}}</option>
+                                                    @endif
                                                 @endif
                                             </select>
                                         </div>
