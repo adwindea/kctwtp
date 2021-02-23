@@ -95,16 +95,17 @@
 
 @section('auth_footer')
     <div class="kct1">
-        <a href="{{ route('idForm') }}" class="btn btn-danger">Salah</a>
         @if(!empty($pel->kct2a) && !empty($pel->kct2b))
-        <button class="btn btn-success float-right" onclick="goToKct2()">Benar</button>
+        <button class="btn btn-danger" onclick="goToKct2(0)">Salah</button>
+        <button class="btn btn-success float-right" onclick="goToKct2(1)">Benar</button>
         @else
+        <button class="btn btn-danger" onclick="openConfirm()">Salah</button>
         <button class="btn btn-success float-right" onclick="openConfirm()">Benar</button>
         @endif
     </div>
     <div class="kct2">
-        <button class="btn btn-danger" onclick="">Salah</button>
-        <button class="btn btn-success float-right" onclick="setKct2()">Benar</button>
+        <button class="btn btn-danger" onclick="setKct2(0)">Salah</button>
+        <button class="btn btn-success float-right" onclick="setKct2(1)">Benar</button>
     </div>
     <div class="konfirmasi">
         <button class="btn btn-default" onclick="getBack()">Kembali</button>
@@ -120,7 +121,7 @@
         $('.kct2').hide();
         $('#warning').hide();
     });
-    function goToKct2(){
+    function goToKct2(kct1){
         var id = '{{ Crypt::encrypt($pel->id) }}';
         $.ajax({
             type: 'POST',
@@ -128,7 +129,7 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 id: id,
-                kct1: 1
+                kct1: kct1
             },
             dataType: 'json',
             success: function (data) {
@@ -139,7 +140,7 @@
             },
         });
     }
-    function setKct2(){
+    function falseKct1(kct1){
         var id = '{{ Crypt::encrypt($pel->id) }}';
         $.ajax({
             type: 'POST',
@@ -147,7 +148,27 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 id: id,
-                kct2: 1
+                kct1: kct1
+            },
+            dataType: 'json',
+            success: function (data) {
+                if(data.success == true){
+                    $('.kct1').slideUp();
+                    $('.kct2').slideUp();
+                    $('.konfirmasi').slideDown();
+                }
+            },
+        });
+    }
+    function setKct2(kct2){
+        var id = '{{ Crypt::encrypt($pel->id) }}';
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('kctStatus') }}',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                kct2: kct2
             },
             dataType: 'json',
             success: function (data) {

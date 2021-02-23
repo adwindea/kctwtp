@@ -35,11 +35,11 @@ class EndUserController extends Controller
         $id = $request->id;
         $id = Crypt::decrypt($id);
         $pel = \App\Models\Pelanggan::where('id', $id)->first();
-        if($kct1){
-            $pel->kct1 = true;
+        if(isset($kct1)){
+            $pel->kct1 = $kct1;
         }
-        if($kct2){
-            $pel->kct2 = true;
+        if(isset($kct2)){
+            $pel->kct2 = $kct2;
         }
         $pel->upgraded_at = date('Y-m-d H:i:s');
         $pel->save();
