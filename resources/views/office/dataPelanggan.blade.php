@@ -137,6 +137,7 @@
 @stop
 
 @section('plugins.Datatables', true)
+@section('plugins.Select2', true)
 
 @section('css')
 <link href="/datatables/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -159,6 +160,7 @@
 <script src="assets/daterangepicker/daterangepicker.js"></script>
 
 <script type="text/javascript">
+    $('.select2bs4').select2();
     var upgraded_date = {};
     var confirmed_date = {};
     $('#upgraded_date').daterangepicker({

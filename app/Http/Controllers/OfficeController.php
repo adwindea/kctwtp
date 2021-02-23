@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use DataTables;
 use Auth;
+use Excel;
 
 class OfficeController extends Controller
 {
@@ -116,5 +117,24 @@ class OfficeController extends Controller
         }
         $pel->save();
         return response()->json( array('success' => true) );
+    }
+
+    public function importPage(){
+        $data['users'] = \App\Models\User::all();
+        return view('office.importPelanggan', $data);
+    }
+
+    public function importPelanggan(Request $request){
+        $this->validate($request, [
+            'pelanggan' => 'required|mimes:xls,xlsx',
+            'pic' => 'required'
+        ]);
+        $user = Crypt::decrypt($request->input('pic'));
+        if ($request->hasFile('pelanggan')) {
+            $file = $request->file('pelanggan'); //GET FILE
+            $data = Excel::import(new \App\Imports\PelangganImport($user), $file); //IMPORT FILE
+            return redirect()->back()->with(['success' => 'Upload success']);
+        }
+        return redirect()->back()->with(['error' => 'Please choose file before']);
     }
 }

@@ -32,6 +32,8 @@ Route::get('/dashboard', [App\Http\Controllers\OfficeController::class, 'dashboa
 Route::get('/dataPelanggan', [App\Http\Controllers\OfficeController::class, 'dataPelanggan'])->name('dataPelanggan');
 Route::post('/dataPelangganTable', [App\Http\Controllers\OfficeController::class, 'dataPelangganTable'])->name('dataPelangganTable');
 Route::post('/confirmUpgrade', [App\Http\Controllers\OfficeController::class, 'confirmUpgrade'])->name('confirmUpgrade');
+Route::get('/importPage', [App\Http\Controllers\OfficeController::class, 'importPage'])->name('importPage');
+Route::post('/importPelanggan', [App\Http\Controllers\OfficeController::class, 'importPelanggan'])->name('importPelanggan');
 
 Route::post('/1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
 Route::get('/1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
