@@ -35,8 +35,8 @@ Route::post('/confirmUpgrade', [App\Http\Controllers\OfficeController::class, 'c
 Route::get('/importPage', [App\Http\Controllers\OfficeController::class, 'importPage'])->name('importPage')->middleware('admin');
 Route::post('/importPelanggan', [App\Http\Controllers\OfficeController::class, 'importPelanggan'])->name('importPelanggan')->middleware('admin');
 
-Route::post('/MT#DxXz+ucs39#w6x3-erTk8$7UJ+%Q_/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
-Route::get('/MT#DxXz+ucs39#w6x3-erTk8$7UJ+%Q_/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
+Route::post('/TSuj5c@k2HRWx@QzUWPMVdmXn5_49Sc!/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
+Route::get('/TSuj5c@k2HRWx@QzUWPMVdmXn5_49Sc!/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
 Route::post('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/unsetWebhook', [App\Http\Controllers\BotHandlerController::class, 'unsetWebhook'])->name('unsetWebhook');
