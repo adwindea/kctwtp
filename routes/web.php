@@ -28,15 +28,15 @@ Route::post('/submitUpgrade', [App\Http\Controllers\EndUserController::class, 's
 Route::get('/thanksPage', [App\Http\Controllers\EndUserController::class, 'thanksPage'])->name('thanksPage');
 
 
-Route::get('/dashboard', [App\Http\Controllers\OfficeController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\OfficeController::class, 'dataPelanggan'])->name('dashboard');
 Route::get('/dataPelanggan', [App\Http\Controllers\OfficeController::class, 'dataPelanggan'])->name('dataPelanggan');
 Route::post('/dataPelangganTable', [App\Http\Controllers\OfficeController::class, 'dataPelangganTable'])->name('dataPelangganTable');
 Route::post('/confirmUpgrade', [App\Http\Controllers\OfficeController::class, 'confirmUpgrade'])->name('confirmUpgrade');
 Route::get('/importPage', [App\Http\Controllers\OfficeController::class, 'importPage'])->name('importPage')->middleware('admin');
 Route::post('/importPelanggan', [App\Http\Controllers\OfficeController::class, 'importPelanggan'])->name('importPelanggan')->middleware('admin');
 
-Route::post('/1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
-Route::get('/1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
+Route::post('/MT#DxXz+ucs39#w6x3-erTk8$7UJ+%Q_/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
+Route::get('/MT#DxXz+ucs39#w6x3-erTk8$7UJ+%Q_/webhook', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler'])->name('telegramHandler');
 Route::post('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/unsetWebhook', [App\Http\Controllers\BotHandlerController::class, 'unsetWebhook'])->name('unsetWebhook');
