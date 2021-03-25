@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'KCT UP Watampone',
+    'title' => 'K-BOT',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>KCT</b>WTP',
+    'logo' => '<b>KCT</b>PLN',
     'logo_img' => 'uploads/PLNLogo.png',
     'logo_img_class' => 'brand-image elevation-1',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'KCTWTP',
+    'logo_img_alt' => 'KCTPLN',
 
     /*
     |--------------------------------------------------------------------------

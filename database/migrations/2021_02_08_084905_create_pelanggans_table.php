@@ -26,10 +26,10 @@ class CreatePelanggansTable extends Migration
             $table->tinyInteger('vkrn_lama')->nullable(true);
             $table->tinyInteger('krn')->nullable(true);
             $table->tinyInteger('vkrn')->nullable(true);
-            $table->decimal('kct1a', 24, 0)->nullable(true);
-            $table->decimal('kct1b', 24, 0)->nullable(true);
-            $table->decimal('kct2a', 24, 0)->nullable(true);
-            $table->decimal('kct2b', 24, 0)->nullable(true);
+            $table->decimal('kct1a', 30, 0)->nullable(true);
+            $table->decimal('kct1b', 30, 0)->nullable(true);
+            $table->decimal('kct2a', 30, 0)->nullable(true);
+            $table->decimal('kct2b', 30, 0)->nullable(true);
             $table->boolean('kct1')->nullable(true)->default(0)->after('kct1b');
             $table->boolean('kct2')->nullable(true)->default(0)->after('kct2b');
             $table->string('img', 200)->nullable(true);

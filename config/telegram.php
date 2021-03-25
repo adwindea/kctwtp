@@ -34,7 +34,7 @@ return [
     'bots'                         => [
         'mybot' => [
             'username'            => 'KctWatamponeBot',
-            'token'               => env('TELEGRAM_BOT_TOKEN', '1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI'),
+            'token'               => env('TELEGRAM_BOT_TOKEN', '<telegram-bot-token>'),
             'certificate_path'    => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
             'webhook_url'         => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
             'commands'            => [

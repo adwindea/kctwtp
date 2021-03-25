@@ -32,6 +32,7 @@ class OfficeController extends Controller
         $status = $request->input('status');
         $krn = $request->input('krn');
         $user = $request->input('user');
+        echo $user;
         $confirmed_date = $request->input('confirmed_date');
         $upgraded_date = $request->input('upgraded_date');
         $pelanggan = \App\Models\Pelanggan::select('pelanggans.*', 'users.name as username')
