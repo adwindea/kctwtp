@@ -40,7 +40,7 @@
                                             <select class="form-control select2bs4" id="user" style="width: 100%;">
                                                 @if(!empty($user))
                                                     @if($admin)
-                                                        <option value="">Semua</option>
+                                                        {{-- <option value="">Semua</option> --}}
                                                         @foreach($user as $u)
                                                             <option value="{{Crypt::encrypt($u->id)}}">{{$u->name}}</option>
                                                         @endforeach

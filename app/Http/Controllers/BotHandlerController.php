@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class BotHandlerController extends Controller
 {
-    private $teleurl = "https://api.telegram.org/file/bot1658132939:AAFDpAIaA5Uv5zavZ3JlpyY-6UthL1R6HGI/";
 
     public function telegramHandler2(){
         echo json_encode(Telegram::getUpdates());
 
     }
     public function telegramHandler(){
+        $token = config('telegram.bots.mybot.token');
+        $teleurl = "https://api.telegram.org/file/bot".$token."/";
         $updates = Telegram::getWebhookUpdates();
 
         $photo = false;
@@ -240,7 +241,7 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                     if($message != '/reset' and $photo){
                         $pel = \App\Models\Pelanggan::where('no_meter', $session->last_message)->first();
                         $client = new Client([
-                            'base_uri' => $this->teleurl,
+                            'base_uri' => $teleurl,
                             'timeout'  => 120.0,
                         ]);
                         $res = $client->request('GET', $message);

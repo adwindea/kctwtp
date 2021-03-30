@@ -6,8 +6,11 @@ use App\Pelanggan;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+use Illuminate\Contracts\Queue\ShouldQueue; //IMPORT SHOUDLQUEUE
+use Maatwebsite\Excel\Concerns\WithChunkReading; //IMPORT CHUNK READING
 
-class PelangganImport implements ToCollection, WithStartRow
+
+class PelangganImport implements ToCollection, WithStartRow, WithChunkReading, ShouldQueue
 {
     /**
      * @return int
@@ -53,5 +56,9 @@ class PelangganImport implements ToCollection, WithStartRow
                 ]
             );
         }
+    }
+    public function chunkSize(): int
+    {
+        return 1000; //ANGKA TERSEBUT PERTANDA JUMLAH BARIS YANG AKAN DIEKSEKUSI
     }
 }

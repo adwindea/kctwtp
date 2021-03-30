@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use App\Jobs\ImportJob;
 use DataTables;
 use Auth;
 use Excel;
@@ -32,7 +34,6 @@ class OfficeController extends Controller
         $status = $request->input('status');
         $krn = $request->input('krn');
         $user = $request->input('user');
-        echo $user;
         $confirmed_date = $request->input('confirmed_date');
         $upgraded_date = $request->input('upgraded_date');
         $pelanggan = \App\Models\Pelanggan::select('pelanggans.*', 'users.name as username')
@@ -139,7 +140,16 @@ class OfficeController extends Controller
         $user = Crypt::decrypt($request->input('pic'));
         if ($request->hasFile('pelanggan')) {
             $file = $request->file('pelanggan'); //GET FILE
-            $data = Excel::import(new \App\Imports\PelangganImport($user), $file); //IMPORT FILE
+            $path = 'excel/';
+            $name = 'maatwebsite.xlsx';
+            Storage::disk('s3')->putFileAs($path, $file, $name);
+            $filename = $path.$name;
+            $data = array(
+                'file'=> $filename,
+                'user'=> $user
+            );
+            ImportJob::dispatch($data);
+            // // $data = Excel::import(new \App\Imports\PelangganImport($user), $file); //IMPORT FILE
             return redirect()->back()->with(['success' => 'Upload success']);
         }
         return redirect()->back()->with(['error' => 'Please choose file before']);
