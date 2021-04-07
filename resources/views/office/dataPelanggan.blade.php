@@ -101,6 +101,7 @@
                                 <th class="text-center">KCT1</th>
                                 <th class="text-center">KCT2</th>
                                 <th class="text-center">Tanggal Input</th>
+                                <th class="text-center">Koordinat</th>
                                 <th class="text-center">Lokasi Input</th>
                                 <th class="text-center">Tanggal Konfirmasi</th>
                                 <th class="text-center">Konfirmasi Oleh</th>
@@ -164,6 +165,10 @@
 <script src="assets/daterangepicker/daterangepicker.js"></script>
 
 <script type="text/javascript">
+    $(document).ready(function(){
+        $('#upgraded_date').val('');
+        $('#confirmed_date').val('');
+    });
     $('.select2bs4').select2();
     var upgraded_date = {};
     var confirmed_date = {};
@@ -248,15 +253,16 @@
             {data: 'kct1', name: 'kct1'}, //15
             {data: 'kct2', name: 'kct2'}, //16
             {data: 'upgraded_at', name: 'upgraded_at'}, //17
-            {data: 'location', name: 'location'}, //18
-            {data: 'confirmed_at', name: 'confirmed_at'}, //19
-            {data: 'username', name: 'username'}, //20
+            {data: 'coordinate', name: 'coordinate'}, //18
+            {data: 'location', name: 'location'}, //19
+            {data: 'confirmed_at', name: 'confirmed_at'}, //20
+            {data: 'username', name: 'username'}, //21
         ],
         columnDefs: [
-            { visible: false, targets: [ 2, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
-            { className: "text-center", targets: [ 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
-            { searchable: false, targets: [ 0, 1, 2, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ] },
-            { orderable: false, targets: [ 0, 11, 12, 13, 14, 18 ] }
+            { visible: false, targets: [ 2, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21] },
+            { className: "text-center", targets: [ 0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21] },
+            { searchable: false, targets: [ 0, 1, 2, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 ] },
+            { orderable: false, targets: [ 0, 11, 12, 13, 14, 18, 19 ] }
         ],
         dom:
             "<'row'<'col-lg-12 col-md-12 col-12'B>>" +

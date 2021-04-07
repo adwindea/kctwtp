@@ -58,13 +58,13 @@ class OfficeController extends Controller
             $pelanggan = $pelanggan->where('confirmed_at', '>=', $confirmed_date['start']);
         }
         if(!empty($confirmed_date['end'])){
-            $pelanggan = $pelanggan->where('confirmed_at', '<=', $confirmed_date['end']);
+            $pelanggan = $pelanggan->where('confirmed_at', '<=', $confirmed_date['end'].' 23:59:59');
         }
         if(!empty($upgraded_date['start'])){
             $pelanggan = $pelanggan->where('upgraded_at', '>=', $upgraded_date['start']);
         }
         if(!empty($upgraded_date['end'])){
-            $pelanggan = $pelanggan->where('upgraded_at', '<=', $upgraded_date['end']);
+            $pelanggan = $pelanggan->where('upgraded_at', '<=', $upgraded_date['end'].' 23:59:59');
         }
         $pelanggan = $pelanggan->get();
         return Datatables::of($pelanggan)
@@ -105,9 +105,16 @@ class OfficeController extends Controller
             }
             return $location;
         })
+        ->addColumn('coordinate', function($pel){
+            $coord = '';
+            if(!empty($pel->lat) and !empty($pel->long)){
+                $coord = $pel->lat.','.$pel->long;
+            }
+            return $coord;
+        })
         ->removeColumn('id')
         ->addIndexColumn()
-        ->rawColumns(['status', 'img', 'kct1', 'kct2', 'location'])
+        ->rawColumns(['status', 'img', 'kct1', 'kct2', 'location', 'coordinate'])
         ->make(true);
     }
     public function confirmUpgrade(Request $request){
@@ -117,6 +124,8 @@ class OfficeController extends Controller
         $pel = \App\Models\Pelanggan::where('id', $id)->first();
         if($mode == 0){
             $pel->upgraded = false;
+            $pel->krn = $pel->krn_lama;
+            $pel->vkrn = $pel->vkrn_lama;
             $pel->img = null;
         }else if($mode == 1){
             $pel->confirmed = true;

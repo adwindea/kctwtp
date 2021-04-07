@@ -40,6 +40,9 @@ Route::get('/TSuj5c@k2HRWx@QzUWPMVdmXn5_49Sc!/webhook', [App\Http\Controllers\Bo
 Route::post('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/getupdate', [App\Http\Controllers\BotHandlerController::class, 'telegramHandler2'])->name('telegramHandler2');
 Route::get('/unsetWebhook', [App\Http\Controllers\BotHandlerController::class, 'unsetWebhook'])->name('unsetWebhook');
+Route::post('/resetPending', [App\Http\Controllers\BotHandlerController::class, 'resetPending'])->name('resetPending');
+Route::get('/resetPending', [App\Http\Controllers\BotHandlerController::class, 'resetPending'])->name('resetPending');
+
 
 Route::get('/unAuth', [App\Http\Controllers\HomeController::class, 'unauthorizedAccess'])->name('unAuth');
 Route::get('/userList', [App\Http\Controllers\HomeController::class, 'userList'])->name('userList')->middleware('admin');

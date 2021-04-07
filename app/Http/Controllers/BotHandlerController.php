@@ -15,6 +15,10 @@ class BotHandlerController extends Controller
         echo json_encode(Telegram::getUpdates());
 
     }
+    public function resetPending(){
+        $updates = Telegram::getWebhookUpdates();
+        return response('Oke', 200)->header('Content-Type', 'text/plain');
+    }
     public function telegramHandler(){
         $token = config('telegram.bots.mybot.token');
         $teleurl = "https://api.telegram.org/file/bot".$token."/";
@@ -134,13 +138,13 @@ Versi KWH : KRN'.$pel->vkrn.'
                             ]
                         ];
                         $reply_markup = $this->replyMarkup($keyboard);
-                        $chat = 'Masukkan nomor token berikut secara berurutan dan tekan enter di setiap nomor tokennya.
+                        $chat = 'Masukkan dengan cara menekan token berikut secara berurutan. Lakukan seperti input token pulsa. Tekan nomor token kemudian tekan Enter (Tanda Panah).
 
-<b>KCT1: '.$pel->kct1a.'</b>
+<b>KCT1: '.$pel->kct1a.'</b> (Enter)
 
-<b>KCT2: '.$pel->kct1b.'</b>
+<b>KCT2: '.$pel->kct1b.'</b> (Enter)
 
-Pastikan semua token terisi dengan benar, lalu perhatikan layar KWH meter Anda.
+Pastikan semua token update sudah dimasukkan dengan benar, lalu perhatikan layar KWH meter Anda.
 Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
@@ -188,13 +192,13 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                                 ]
                             ];
                             $reply_markup = $this->replyMarkup($keyboard);
-                            $chat = 'Masukkan lagi nomor token berikut secara berurutan dan tekan enter di setiap nomor tokennya.
+                            $chat = 'Masukkan dengan cara menekan token berikut secara berurutan. Lakukan seperti input token pulsa. Tekan nomor token kemudian tekan Enter (Tanda Panah).
 
-<b>KCT3: '.$pel->kct2a.'</b>
+<b>KCT3: '.$pel->kct2a.'</b> (Enter)
 
-<b>KCT4: '.$pel->kct2b.'</b>
+<b>KCT4: '.$pel->kct2b.'</b> (Enter)
 
-Pastikan semua token terisi dengan benar, lalu perhatikan layar KWH meter Anda.
+Pastikan semua token update sudah dimasukkan dengan benar, lalu perhatikan layar KWH meter Anda.
 Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                             $response = Telegram::sendMessage([
                                 'chat_id' => $chat_id,
@@ -265,7 +269,7 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                             'resize_keyboard' => true,
                             'one_time_keyboard' => true
                         ]);
-                        $chat = 'Foto sudah kami terima. Terima kasih telah melakukan update software KWH meter. Silahkan tekan tombol selesai dibawah untuk mengakhiri sesi.';
+                        $chat = 'Foto sudah kami terima. Silahkan tekan tombol selesai dibawah untuk mengakhiri sesi.';
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
                             'text' => $chat,
@@ -291,6 +295,11 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         $pel->lat = $message->latitude;
                         $pel->long = $message->longitude;
                         $pel->save();
+                        $chat = 'Terima kasih telah melakukan update software KWH meter. Untuk informasi lebih lanjut silahkan hubungi kantor PLN terdekat.';
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $chat_id,
+                            'text' => $chat
+                        ]);
                         $session->delete();
                     }elseif(!$location){
                         $chat = 'Silahkan tekan tombol selesai untuk mengakhiri sesi.';
@@ -350,7 +359,13 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
 
             $response = Telegram::sendMessage([
                 'chat_id' => $chat_id,
-                'text' => 'Halo, silahkan masukkan nomor meter anda untuk memulai.',
+                'text' => 'Halo Pelanggan Setia PLN, yuk Update Software Kwh Meter secara Mandiri.
+
+Sebelum memulai pastikan pembelian token pulsa sudah dimasukkan ke kwh meter.
+
+Jangan lupa aktifkan layanan lokasi Smartphone Anda.
+
+Silahkan masukkan nomor meter anda untuk memulai.',
                 'reply_markup' => $this->resetButton()
             ]);
             $session = new \App\Models\TelegramSession;
