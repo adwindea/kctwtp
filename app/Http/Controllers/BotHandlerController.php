@@ -83,7 +83,14 @@ class BotHandlerController extends Controller
                             }else{
                                 $session->session_name = 'Start';
                                 $session->save();
-                                $add = 'KWH meter Anda saat ini versi KRN43 dan tidak diperlukan update. Silahkan masukkan nomor meter lainnya untuk melanjutkan.';
+                                $add = 'KWH meter Anda saat ini versi KRN43 dan tidak diperlukan update. KWH Meter Anda saat ini versi KRN43 dan tidak diperlukan update. KWH Meter telah terupdate dengan nomor token berikut.
+
+KCT1: '.$pel->kct1a.'
+KCT2: '.$pel->kct1b.'
+KCT3: '.$pel->kct2a.'
+KCT4: '.$pel->kct2b.'
+
+Terima kasih telah melakukan update software KWH meter. Untuk informasi lebih lanjut silahkan hubungi kantor PLN terdekat.';
                                 $keyboard = [
                                     [
                                         Keyboard::inlineButton(['text' => 'Reset', 'callback_data' => '/reset'])
@@ -305,7 +312,8 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         $chat = 'Silahkan tekan tombol selesai untuk mengakhiri sesi.';
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
-                            'text' => $chat
+                            'text' => $chat,
+                            'reply_markup' => $this->resetButton()
                         ]);
                     }else if($message == '/reset'){
                         $this->resetSession($chat_id, $session);
@@ -313,6 +321,7 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                         $response = Telegram::sendMessage([
                             'chat_id' => $chat_id,
                             'text' => 'Perintah tidak ditemukan!',
+                            'reply_markup' => $this->resetButton()
                         ]);
                     }
                 }
@@ -361,7 +370,7 @@ Tekan tombol dibawah sesuai dengan pesan yang ada di layar KWH meter.';
                 'chat_id' => $chat_id,
                 'text' => 'Halo Pelanggan Setia PLN, yuk Update Software Kwh Meter secara Mandiri.
 
-Sebelum memulai pastikan pembelian token pulsa sudah dimasukkan ke kwh meter.
+Sebelum memulai, pastikan semua token yang sudah dibeli sudah dimasukkan ke kwh meter.
 
 Jangan lupa aktifkan layanan lokasi Smartphone Anda.
 
